@@ -25,7 +25,7 @@ model User {
 
 model Profile {
   id          Int      @id @default(autoincrement())
-  firstname   String
+  firstName   String
   secondName  String
   avatar_url  String?
   description String?
