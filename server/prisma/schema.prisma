@@ -27,6 +27,7 @@ model Profile {
   id          Int      @id @default(autoincrement())
   firstname   String
   secondName  String
+  avatar_url  String?
   description String?
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -69,6 +70,10 @@ model Comment {
 
   post   Post @relation(fields: [postId], references: [id])
   postId Int
+
+  parent   Comment?  @relation("CommentChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId Int
+  children Comment[] @relation("CommentChildren")
 }
 
 model LikesOnPosts {
