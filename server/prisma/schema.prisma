@@ -12,3 +12,70 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           Int            @id @default(autoincrement())
+  login        String         @unique
+  passwordHash String
+  profile      Profile?
+  posts        Post[]
+  comments     Comment[]
+  postsLikes   LikesOnPosts[]
+}
+
+model Profile {
+  id          Int      @id @default(autoincrement())
+  firstname   String
+  secondName  String
+  description String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int      @unique
+}
+
+model Post {
+  id            Int      @id @default(autoincrement())
+  title         String
+  body          String
+  imageUrl      String?
+  viewsCount    Int      @default(0)
+  likesCount    Int      @default(0)
+  commentsCount Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  category   Category @relation(fields: [categoryId], references: [id], onUpdate: Cascade)
+  categoryId Int
+
+  comments   Comment[]
+  usersLikes LikesOnPosts[]
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+  posts Post[]
+}
+
+model Comment {
+  id   Int    @id @default(autoincrement())
+  body String
+
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int
+}
+
+model LikesOnPosts {
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int
+
+  @@id([userId, postId])
+}
