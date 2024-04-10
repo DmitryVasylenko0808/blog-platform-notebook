@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Post } from '@prisma/client';
+import { Category, Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
@@ -65,7 +65,7 @@ export class PostsService {
         return res;
     } 
 
-    async search(query: SearchPostsQueryParams) {
+    async search(query: SearchPostsQueryParams): Promise<Omit<Post, "body">[]> {
         const { value, limit, offset } = query;
 
         const posts = await this.prismaService.post.findMany({
@@ -81,6 +81,12 @@ export class PostsService {
         const res = this.excludePostBody(posts);
 
         return res;
+    }
+
+    async getCategories(): Promise<Category[]> {
+        const categories = await this.prismaService.category.findMany();
+
+        return categories;
     }
 
     private buildFilter(type?: GetPostsQueryParams["type"], categoryIds?: string) {

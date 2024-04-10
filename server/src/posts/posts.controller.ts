@@ -1,6 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { Post } from '@prisma/client';
+import { Category, Post } from '@prisma/client';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 
@@ -24,8 +24,12 @@ export class PostsController {
     }
 
     @Get("search")
-    async search(@Query() query: SearchPostsQueryParams) {
+    async search(@Query() query: SearchPostsQueryParams): Promise<Omit<Post, "body">[]> {
         return await this.postsService.search(query);
     }
 
+    @Get("categories")
+    async getCategoris(): Promise<Category[]> {
+        return await this.postsService.getCategories();
+    }
 }
