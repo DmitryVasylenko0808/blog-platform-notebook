@@ -17,9 +17,12 @@ export class PostsController {
         return await this.postsService.getOne(id);
     }
 
+    @Get("author/:authorId") 
+    async getByAuthorId(@Param("authorId", ParseIntPipe) authorId: number): Promise<Omit<Post, "body">[]> {
+        return await this.postsService.getByAuthorId(authorId);
+    }
+
     @Get("search")
     async search() {}
 
-    @Get("author/:authorId") 
-    async getByAuthorId() {}
 }

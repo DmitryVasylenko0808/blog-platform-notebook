@@ -26,18 +26,7 @@ export class PostsService {
             ...filter
         });
 
-        const res = posts.map(item => {
-            let p: Omit<Post, "body"> = {} as Omit<Post, "body">;
-            for(const key of Object.keys(item)) {
-                if (key === "body") {
-                    continue;
-                }
-
-                p[key] = item[key];
-            }
-
-            return p;
-        });
+        const res = this.excludePostBody(posts);
 
         return res;
     }
@@ -62,6 +51,18 @@ export class PostsService {
 
         return post;
     }
+
+    async getByAuthorId(id: number): Promise<Omit<Post, "body">[]> {
+        const posts = await this.prismaService.post.findMany({
+            where: {
+                authorId: id
+            }
+        });
+
+        const res = this.excludePostBody(posts);
+
+        return res;
+    } 
 
     private buildFilter(type?: GetPostsQueryParams["type"]) {
         let filter;
@@ -96,5 +97,22 @@ export class PostsService {
         }
 
         return filter;
+    }
+
+    private excludePostBody(posts: Post[]) {
+        const res = posts.map(item => {
+            let p: Omit<Post, "body"> = {} as Omit<Post, "body">;
+            for(const key of Object.keys(item)) {
+                if (key === "body") {
+                    continue;
+                }
+
+                p[key] = item[key];
+            }
+
+            return p;
+        });
+
+        return res;
     }
 }
