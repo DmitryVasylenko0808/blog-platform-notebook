@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
@@ -32,7 +32,7 @@ export class PostsService {
                 if (key === "body") {
                     continue;
                 }
-                
+
                 p[key] = item[key];
             }
 
@@ -40,6 +40,27 @@ export class PostsService {
         });
 
         return res;
+    }
+
+    async getOne(id: number): Promise<Post> {
+        const post = await this.prismaService.post.findUnique({
+            where: { id },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        login: true
+                    }
+                },
+                category: true
+            }
+        });
+
+        if (!post) {
+            throw new NotFoundException("Post is not found");
+        }
+
+        return post;
     }
 
     private buildFilter(type?: GetPostsQueryParams["type"]) {

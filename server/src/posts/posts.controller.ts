@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post } from '@prisma/client';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
@@ -7,13 +7,15 @@ import { GetPostsQueryParams } from './dto/get.posts.query.params';
 export class PostsController {
     constructor(private postsService: PostsService) {}
 
-    @Get("")
+    @Get()
     async get(@Query() query: GetPostsQueryParams): Promise<Omit<Post, "body">[]> {
         return await this.postsService.get(query);
     }
 
     @Get(":id")
-    async getById() {}
+    async getById(@Param("id", ParseIntPipe) id: number): Promise<Post> {
+        return await this.postsService.getOne(id);
+    }
 
     @Get("search")
     async search() {}
