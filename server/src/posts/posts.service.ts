@@ -8,8 +8,8 @@ export class PostsService {
     constructor(private prismaService: PrismaService) {}
 
     async get(query: GetPostsQueryParams): Promise<Omit<Post, "body">[]> {
-        const { type, offset, limit } = query;
-        const filter = this.buildFilter(type);
+        const { type, offset, limit, categoryIds } = query;
+        const filter = this.buildFilter(type, categoryIds);
 
         const posts = await this.prismaService.post.findMany({
             skip: Number(offset),
@@ -64,8 +64,8 @@ export class PostsService {
         return res;
     } 
 
-    private buildFilter(type?: GetPostsQueryParams["type"]) {
-        let filter;
+    private buildFilter(type?: GetPostsQueryParams["type"], categoryIds?: string) {
+        let filter: any = {};
 
         if (type === "popular") {
             filter = {
@@ -92,9 +92,18 @@ export class PostsService {
                     }
                 }
             }
-        } else {
-            return null;
         }
+
+        if (categoryIds) {
+            const categoryIdsArray = categoryIds.split(",").map(item => parseInt(item));
+            filter = {
+                ...filter,
+                where: {
+                    ...filter.where,
+                    categoryId: { in: categoryIdsArray }
+                }
+            }
+        };
 
         return filter;
     }
