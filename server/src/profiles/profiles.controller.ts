@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { Profile } from '@prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { EditProfileDto } from './dto/edit.profile.dto';
+import { NoFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -14,8 +15,9 @@ export class ProfilesController {
     }
 
     @UseGuards(AuthGuard)
+    @UseInterceptors(NoFilesInterceptor())
     @Patch()
-    async edit(@Request() req, @Body() body: EditProfileDto) {
+    async edit(@Request() req, @Body() body: EditProfileDto): Promise<void> {
         await this.profilesService.edit(req.user.id, body);
     } 
 }
