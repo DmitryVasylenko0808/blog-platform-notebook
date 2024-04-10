@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
+import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 
 @Injectable()
 export class PostsService {
@@ -63,6 +64,24 @@ export class PostsService {
 
         return res;
     } 
+
+    async search(query: SearchPostsQueryParams) {
+        const { value, limit, offset } = query;
+
+        const posts = await this.prismaService.post.findMany({
+            skip: Number(offset),
+            take: Number(limit),
+            where: {
+                title: {
+                    contains: value
+                }
+            }
+        });
+
+        const res = this.excludePostBody(posts);
+
+        return res;
+    }
 
     private buildFilter(type?: GetPostsQueryParams["type"], categoryIds?: string) {
         let filter: any = {};
