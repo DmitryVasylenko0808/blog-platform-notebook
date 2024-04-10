@@ -37,6 +37,7 @@ model Profile {
 model Post {
   id            Int      @id @default(autoincrement())
   title         String
+  description   String
   body          String
   imageUrl      String?
   viewsCount    Int      @default(0)
