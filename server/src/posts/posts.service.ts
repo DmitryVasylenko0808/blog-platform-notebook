@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 import { buildFilter, excludePostBody } from './posts.helpers';
+import { CreatePostDto } from './dto/create.post.dto';
 
 @Injectable()
 export class PostsService {
@@ -118,5 +119,23 @@ export class PostsService {
         return categories;
     }
 
-    
+    async create(authorId: number, body: CreatePostDto): Promise<void> {
+        await this.prismaService.post.create({
+            data: { 
+                title: body.title,
+                description: body.description,
+                body: body.body,
+                author: {
+                    connect: {
+                        id: authorId
+                    }
+                },
+                category: {
+                    connect: {
+                        id: Number(body.categoryId)
+                    }
+                }
+            }
+        });
+    }
 }
