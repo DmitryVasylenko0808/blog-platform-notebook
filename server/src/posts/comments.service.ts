@@ -55,4 +55,47 @@ export class CommentsService {
             });
         }
     }
+
+    async delete(postId: number, userId: number, commentId: number) {
+        const post = await this.prismaService.post.findUnique({
+            where: {
+                id: postId
+            }
+        });
+
+        if (!post) {
+            throw new NotFoundException("Post is not found")
+        }
+
+        const comment = await this.prismaService.comment.findUnique({
+            where: {
+                id: commentId,
+                authorId: userId
+            }
+        });
+
+        if (!comment) {
+            throw new NotFoundException("Comment is not found")
+        }
+
+        await this.prismaService.comment.delete({
+            where: {
+                id: commentId,
+                authorId: userId
+            }
+        });
+
+        if (!comment.parentId) {
+            await this.prismaService.post.update({
+                where: {
+                    id: postId
+                },
+                data: {
+                    commentsCount: {
+                        decrement: 1
+                    }
+                }
+            });
+        }
+    }
 }

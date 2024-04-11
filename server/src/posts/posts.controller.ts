@@ -80,4 +80,10 @@ export class PostsController {
     async addComment(@Request() req, @Param("id", ParseIntPipe) id: number, @Body() body: AddCommentDto) {
         await this.commentsService.add(id, req.user.id, body);
     }
+
+    @UseGuards(AuthGuard)
+    @Delete(":id/comments/:commentId")
+    async deleteComment(@Request() req, @Param("id", ParseIntPipe) id: number, @Param("commentId", ParseIntPipe) commentId: number) {
+        await this.commentsService.delete(id, req.user.id, commentId);
+    }
 }
