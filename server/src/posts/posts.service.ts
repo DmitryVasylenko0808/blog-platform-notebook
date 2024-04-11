@@ -5,6 +5,7 @@ import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 import { buildFilter, excludePostBody } from './posts.helpers';
 import { CreatePostDto } from './dto/create.post.dto';
+import { EditPostDto } from './dto/edit.post.dto';
 
 @Injectable()
 export class PostsService {
@@ -136,6 +137,44 @@ export class PostsService {
                     }
                 }
             }
+        });
+    }
+
+    async edit(id: number, authorId: number, body: EditPostDto): Promise<void> {
+        const post = await this.prismaService.post.findUnique({
+            where: {
+                id,
+                authorId,
+            },   
+        });
+
+        if (!post) {
+            throw new NotFoundException("Post is not found");
+        }
+
+        await this.prismaService.post.update({
+            where: {
+                id,
+                authorId,
+            },
+            data: {
+                ...body,
+                categoryId: Number(body.categoryId)
+            }
+        });
+    }
+
+    async delete(authorId: number, id: number): Promise<void> {
+        const post = await this.prismaService.post.findUnique({
+            where: { id, authorId }
+        });
+
+        if (!post) {
+            throw new NotFoundException("Post is not found");
+        }
+
+        await this.prismaService.post.delete({
+            where: { id }
         });
     }
 }

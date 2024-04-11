@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Category, Post as Article } from '@prisma/client';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
@@ -6,6 +6,7 @@ import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { NoFilesInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dto/create.post.dto';
+import { EditPostDto } from './dto/edit.post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -46,5 +47,18 @@ export class PostsController {
     @Post() 
     async create(@Request() req, @Body() body: CreatePostDto): Promise<void> {
         return await this.postsService.create(req.user.id, body);
+    }
+
+    @UseGuards(AuthGuard)
+    @UseInterceptors(NoFilesInterceptor())
+    @Patch(":id")
+    async edit(@Request() req, @Param("id", ParseIntPipe) id: number, @Body() body: EditPostDto) {
+        return await this.postsService.edit(id, req.user.id, body);
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete(":id")
+    async delete(@Request() req, @Param("id", ParseIntPipe) id: number): Promise<void> {
+        return await this.postsService.delete(req.user.id, id);
     }
 }
