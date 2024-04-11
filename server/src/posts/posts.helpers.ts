@@ -1,4 +1,4 @@
-import { Post } from "@prisma/client";
+import { Comment, Post } from "@prisma/client";
 import { GetPostsQueryParams } from "./dto/get.posts.query.params";
 
 export const buildFilter = (type?: GetPostsQueryParams["type"], categoryIds?: string) => {
@@ -60,4 +60,13 @@ export const excludePostBody = (posts: Post[]) => {
     });
 
     return res;
+}
+
+export const buildCommentsTree = (comments: Comment[], parentId?: number) => {
+    parentId = parentId ?? comments[0].parentId;
+
+    return comments
+        .filter(c => c.parentId === parentId)
+        .map(child => ({ ...child, children: buildCommentsTree(comments, child.id) }))
+        .sort((a, b) => a.id - b.id);
 }

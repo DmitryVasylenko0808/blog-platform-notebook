@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { Category, Post as Article } from '@prisma/client';
+import { Category, Post as Article, Comment } from '@prisma/client';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -75,15 +75,20 @@ export class PostsController {
         return await this.favoritePostsService.toggleFavorite(id, req.user.id);
     }
 
+    @Get(":id/comments")
+    async getComments(@Param("id", ParseIntPipe) id: number): Promise<Comment[]> {
+        return await this.commentsService.get(id);
+    }
+
     @UseGuards(AuthGuard)
     @Post(":id/comments") 
-    async addComment(@Request() req, @Param("id", ParseIntPipe) id: number, @Body() body: AddCommentDto) {
-        await this.commentsService.add(id, req.user.id, body);
+    async addComment(@Request() req, @Param("id", ParseIntPipe) id: number, @Body() body: AddCommentDto): Promise<void> {
+        return await this.commentsService.add(id, req.user.id, body);
     }
 
     @UseGuards(AuthGuard)
     @Delete(":id/comments/:commentId")
-    async deleteComment(@Request() req, @Param("id", ParseIntPipe) id: number, @Param("commentId", ParseIntPipe) commentId: number) {
-        await this.commentsService.delete(id, req.user.id, commentId);
+    async deleteComment(@Request() req, @Param("id", ParseIntPipe) id: number, @Param("commentId", ParseIntPipe) commentId: number): Promise<void> {
+        return await this.commentsService.delete(id, req.user.id, commentId);
     }
 }
