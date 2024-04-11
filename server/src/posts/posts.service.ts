@@ -65,6 +65,34 @@ export class PostsService {
         return res;
     } 
 
+    async getRelated(id: number, limit: number): Promise<Omit<Post, "body">[]> {
+
+        const post = await this.prismaService.post.findUnique({
+            where: { id }
+        });
+
+        if (!post) {
+            throw new NotFoundException("Post is not found");
+        }
+
+        const posts = await this.prismaService.post.findMany({
+            take: limit,
+            where: {
+                categoryId: post.categoryId,
+                id: {
+                    not: post.id
+                } 
+            },
+            orderBy: {
+                likesCount: "desc"
+            }
+        });
+
+        const res = this.excludePostBody(posts);
+
+        return res;
+    }
+
     async search(query: SearchPostsQueryParams): Promise<Omit<Post, "body">[]> {
         const { value, limit, offset } = query;
 

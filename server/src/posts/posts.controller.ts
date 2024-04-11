@@ -23,13 +23,18 @@ export class PostsController {
         return await this.postsService.getByAuthorId(authorId);
     }
 
+    @Get("related/:id")
+    async getRelated(@Param("id", ParseIntPipe) id: number, @Query("limit", ParseIntPipe) limit: number) {
+        return await this.postsService.getRelated(id, limit);
+    }
+
     @Get("search")
     async search(@Query() query: SearchPostsQueryParams): Promise<Omit<Post, "body">[]> {
         return await this.postsService.search(query);
     }
 
     @Get("categories")
-    async getCategoris(): Promise<Category[]> {
+    async getCategories(): Promise<Category[]> {
         return await this.postsService.getCategories();
     }
 }
