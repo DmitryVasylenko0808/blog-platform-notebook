@@ -6,7 +6,12 @@ import { FavoritePostsService } from './favorite-posts.service';
 import { CommentsService } from './comments.service';
 
 @Module({
-  providers: [PostsService, PrismaService, FavoritePostsService, CommentsService],
+  providers: [
+    PostsService, 
+    PrismaService, 
+    FavoritePostsService, 
+    CommentsService
+  ],
   controllers: [PostsController]
 })
 export class PostsModule {}

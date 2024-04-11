@@ -18,7 +18,7 @@ export class CommentsService {
             throw new NotFoundException("Post is not found");
         }
 
-        await this.prismaService.comment.create({
+        const addCommentArgs: any = {
             data: {
                 post: {
                     connect: {
@@ -32,15 +32,27 @@ export class CommentsService {
                 },
                 body: text
             }
-        });
+        };
 
-        await this.prismaService.post.update({
-            where: { id: postId },
-            data: {
-                commentsCount: {
-                    increment: 1
+        if (parentId) {
+            addCommentArgs.data.parent = {
+                connect: {
+                    id: parentId
                 }
             }
-        });
+        }
+
+        await this.prismaService.comment.create(addCommentArgs);
+
+        if (!parentId) {
+            await this.prismaService.post.update({
+                where: { id: postId },
+                data: {
+                    commentsCount: {
+                        increment: 1
+                    }
+                }
+            });
+        }
     }
 }
