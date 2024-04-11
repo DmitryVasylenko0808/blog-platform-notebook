@@ -8,12 +8,15 @@ import { NoFilesInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dto/create.post.dto';
 import { EditPostDto } from './dto/edit.post.dto';
 import { FavoritePostsService } from './favorite-posts.service';
+import { AddCommentDto } from './dto/add.comment.dto';
+import { CommentsService } from './comments.service';
 
 @Controller('posts')
 export class PostsController {
     constructor(
         private postsService: PostsService,
-        private favoritePostsService: FavoritePostsService
+        private favoritePostsService: FavoritePostsService,
+        private commentsService: CommentsService
     ) {}
 
     @Get()
@@ -70,5 +73,11 @@ export class PostsController {
     @Patch(":id/toggleFavorite")
     async toggleFavorite(@Request() req, @Param("id", ParseIntPipe) id: number): Promise<void> {
         return await this.favoritePostsService.toggleFavorite(id, req.user.id);
+    }
+
+    @UseGuards(AuthGuard)
+    @Post(":id/comments") 
+    async addComment(@Request() req, @Param("id", ParseIntPipe) id: number, @Body() body: AddCommentDto) {
+        await this.commentsService.add(id, req.user.id, body);
     }
 }
