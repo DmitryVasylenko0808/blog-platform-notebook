@@ -3,6 +3,7 @@ import { Category, Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
+import { buildFilter, excludePostBody } from './posts.helpers';
 
 @Injectable()
 export class PostsService {
@@ -10,7 +11,7 @@ export class PostsService {
 
     async get(query: GetPostsQueryParams): Promise<Omit<Post, "body">[]> {
         const { type, offset, limit, categoryIds } = query;
-        const filter = this.buildFilter(type, categoryIds);
+        const filter = buildFilter(type, categoryIds);
 
         const posts = await this.prismaService.post.findMany({
             skip: Number(offset),
@@ -27,7 +28,7 @@ export class PostsService {
             ...filter
         });
 
-        const res = this.excludePostBody(posts);
+        const res = excludePostBody(posts);
 
         return res;
     }
@@ -60,7 +61,7 @@ export class PostsService {
             }
         });
 
-        const res = this.excludePostBody(posts);
+        const res = excludePostBody(posts);
 
         return res;
     } 
@@ -88,7 +89,7 @@ export class PostsService {
             }
         });
 
-        const res = this.excludePostBody(posts);
+        const res = excludePostBody(posts);
 
         return res;
     }
@@ -106,7 +107,7 @@ export class PostsService {
             }
         });
 
-        const res = this.excludePostBody(posts);
+        const res = excludePostBody(posts);
 
         return res;
     }
@@ -117,64 +118,5 @@ export class PostsService {
         return categories;
     }
 
-    private buildFilter(type?: GetPostsQueryParams["type"], categoryIds?: string) {
-        let filter: any = {};
-
-        if (type === "popular") {
-            filter = {
-                orderBy: {
-                    viewsCount: "desc"
-                }
-            }
-        } else if (type === "recently") {
-            filter = {
-                orderBy: {
-                    createdAt: "desc"
-                }
-            }
-        } else if (type === "featured") {
-            const currentDate = new Date();
-            const dateStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-            const dateEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
-
-            filter = {
-                where: {
-                    createdAt: {
-                        gte: dateStart,
-                        lte: dateEnd
-                    }
-                }
-            }
-        }
-
-        if (categoryIds) {
-            const categoryIdsArray = categoryIds.split(",").map(item => parseInt(item));
-            filter = {
-                ...filter,
-                where: {
-                    ...filter.where,
-                    categoryId: { in: categoryIdsArray }
-                }
-            }
-        };
-
-        return filter;
-    }
-
-    private excludePostBody(posts: Post[]) {
-        const res = posts.map(item => {
-            let p: Omit<Post, "body"> = {} as Omit<Post, "body">;
-            for(const key of Object.keys(item)) {
-                if (key === "body") {
-                    continue;
-                }
-
-                p[key] = item[key];
-            }
-
-            return p;
-        });
-
-        return res;
-    }
+    
 }
