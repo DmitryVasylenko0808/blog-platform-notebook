@@ -7,10 +7,14 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { NoFilesInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dto/create.post.dto';
 import { EditPostDto } from './dto/edit.post.dto';
+import { FavoritePostsService } from './favorite-posts.service';
 
 @Controller('posts')
 export class PostsController {
-    constructor(private postsService: PostsService) {}
+    constructor(
+        private postsService: PostsService,
+        private favoritePostsService: FavoritePostsService
+    ) {}
 
     @Get()
     async get(@Query() query: GetPostsQueryParams): Promise<Omit<Article, "body">[]> {
@@ -60,5 +64,11 @@ export class PostsController {
     @Delete(":id")
     async delete(@Request() req, @Param("id", ParseIntPipe) id: number): Promise<void> {
         return await this.postsService.delete(req.user.id, id);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch(":id/toggleFavorite")
+    async toggleFavorite(@Request() req, @Param("id", ParseIntPipe) id: number): Promise<void> {
+        return await this.favoritePostsService.toggleFavorite(id, req.user.id);
     }
 }
