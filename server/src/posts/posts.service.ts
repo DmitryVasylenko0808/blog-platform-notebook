@@ -120,12 +120,13 @@ export class PostsService {
         return categories;
     }
 
-    async create(authorId: number, body: CreatePostDto): Promise<void> {
+    async create(authorId: number, body: CreatePostDto, imageFilename?: string): Promise<void> {
         await this.prismaService.post.create({
             data: { 
                 title: body.title,
                 description: body.description,
                 body: body.body,
+                imageUrl: imageFilename,
                 author: {
                     connect: {
                         id: authorId
@@ -140,7 +141,7 @@ export class PostsService {
         });
     }
 
-    async edit(id: number, authorId: number, body: EditPostDto): Promise<void> {
+    async edit(id: number, authorId: number, body: EditPostDto, imageFilename): Promise<void> {
         const post = await this.prismaService.post.findUnique({
             where: {
                 id,
@@ -159,6 +160,7 @@ export class PostsService {
             },
             data: {
                 ...body,
+                imageUrl: imageFilename,
                 categoryId: Number(body.categoryId)
             }
         });

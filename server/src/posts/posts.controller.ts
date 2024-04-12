@@ -1,15 +1,16 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseFilePipeBuilder, ParseIntPipe, Patch, Post, Query, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Category, Post as Article, Comment } from '@prisma/client';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { NoFilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dto/create.post.dto';
 import { EditPostDto } from './dto/edit.post.dto';
 import { FavoritePostsService } from './favorite-posts.service';
 import { AddCommentDto } from './dto/add.comment.dto';
 import { CommentsService } from './comments.service';
+import { postsStorage } from 'src/config/multer.config';
 
 @Controller('posts')
 export class PostsController {
@@ -50,17 +51,40 @@ export class PostsController {
     }
 
     @UseGuards(AuthGuard)
-    @UseInterceptors(NoFilesInterceptor())
+    @UseInterceptors(FileInterceptor("imageFile", { storage: postsStorage }))
     @Post() 
-    async create(@Request() req, @Body() body: CreatePostDto): Promise<void> {
-        return await this.postsService.create(req.user.id, body);
+    async create(
+        @Request() req, 
+        @Body() body: CreatePostDto,
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({ fileType: "jpeg" })
+                .build({
+                    fileIsRequired: false,
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+                })
+        ) file?: Express.Multer.File
+    ): Promise<void> {
+        return await this.postsService.create(req.user.id, body, file?.filename);
     }
 
     @UseGuards(AuthGuard)
-    @UseInterceptors(NoFilesInterceptor())
+    @UseInterceptors(FileInterceptor("imageFile", { storage: postsStorage }))
     @Patch(":id")
-    async edit(@Request() req, @Param("id", ParseIntPipe) id: number, @Body() body: EditPostDto) {
-        return await this.postsService.edit(id, req.user.id, body);
+    async edit(
+        @Request() req, 
+        @Param("id", ParseIntPipe) id: number, 
+        @Body() body: EditPostDto,
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({ fileType: "jpeg" })
+                .build({
+                    fileIsRequired: false,
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+                })
+        ) file?: Express.Multer.File
+    ) {
+        return await this.postsService.edit(id, req.user.id, body, file.filename);
     }
 
     @UseGuards(AuthGuard)

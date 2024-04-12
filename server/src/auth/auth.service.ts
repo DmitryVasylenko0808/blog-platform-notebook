@@ -12,7 +12,7 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async signUp(data: SignUpDto): Promise<void> {
+    async signUp(data: SignUpDto, avatarFileName?: string): Promise<void> {
         const { login, password, ...profile } = data;
 
         const user = await this.prismaService.user.findUnique({
@@ -30,7 +30,10 @@ export class AuthService {
                 login,
                 passwordHash: hash,
                 profile: {
-                    create: profile
+                    create: {
+                        ...profile,
+                        avatarUrl: avatarFileName
+                    }
                 }
             }
         });

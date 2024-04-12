@@ -19,7 +19,7 @@ export class ProfilesService {
         return profile;
     }
     
-    async edit(id: number, body: EditProfileDto): Promise<void> {
+    async edit(id: number, body: EditProfileDto, avatarFilename?: string): Promise<void> {
         const profile = await this.prismaService.profile.findUnique({
             where: { id }
         });
@@ -30,7 +30,10 @@ export class ProfilesService {
 
         await this.prismaService.profile.update({
             where: { id },
-            data: { ...body }
+            data: { 
+                ...body,
+                avatarUrl: avatarFilename
+            }
         });
     }
 }

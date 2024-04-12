@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, ParseFilePipeBuilder, ParseIntPipe, Patch, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { Profile } from '@prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { EditProfileDto } from './dto/edit.profile.dto';
-import { NoFilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { avatarsStorage } from 'src/config/multer.config';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -15,9 +16,20 @@ export class ProfilesController {
     }
 
     @UseGuards(AuthGuard)
-    @UseInterceptors(NoFilesInterceptor())
+    @UseInterceptors(FileInterceptor("avatarFile", { storage: avatarsStorage }))
     @Patch()
-    async edit(@Request() req, @Body() body: EditProfileDto): Promise<void> {
-        await this.profilesService.edit(req.user.id, body);
+    async edit(
+        @Request() req, 
+        @Body() body: EditProfileDto,
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({ fileType: "jpeg" })
+                .build({ 
+                    fileIsRequired: false,
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY 
+                })
+        ) file?: Express.Multer.File
+    ): Promise<void> {
+        await this.profilesService.edit(req.user.id, body, file?.filename);
     } 
 }
