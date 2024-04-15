@@ -1,7 +1,9 @@
 import { Comment, Post } from "@prisma/client";
 import { GetPostsQueryParams } from "./dto/get.posts.query.params";
 
-export const buildFilter = (type?: GetPostsQueryParams["type"], categoryIds?: string) => {
+export const buildFilter = (filterParams: Omit<GetPostsQueryParams, "limit" | "offset">) => {
+    const { type, categoryIds, authorId } = filterParams;
+
     let filter: any = {};
 
     if (type === "popular") {
@@ -41,6 +43,16 @@ export const buildFilter = (type?: GetPostsQueryParams["type"], categoryIds?: st
             }
         }
     };
+
+    if (authorId) {
+        filter = {
+            ...filter,
+            where: {
+                ...filter.where,
+                authorId: Number(authorId)
+            }
+        }
+    }
 
     return filter;
 }

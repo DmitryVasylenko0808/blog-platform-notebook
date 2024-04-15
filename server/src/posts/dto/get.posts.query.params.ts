@@ -3,4 +3,5 @@ export class GetPostsQueryParams {
     limit: number;
     type?: "featured" | "popular" | "recently";
     categoryIds?: string;
+    authorId?: string;
 }

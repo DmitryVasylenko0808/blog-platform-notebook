@@ -12,8 +12,8 @@ export class PostsService {
     constructor(private prismaService: PrismaService) {}
 
     async get(query: GetPostsQueryParams): Promise<Omit<Post, "body">[]> {
-        const { type, offset, limit, categoryIds } = query;
-        const filter = buildFilter(type, categoryIds);
+        const { offset, limit, ...filterArg } = query;
+        const filter = buildFilter(filterArg);
 
         const posts = await this.prismaService.post.findMany({
             skip: Number(offset),
@@ -56,20 +56,7 @@ export class PostsService {
         return post;
     }
 
-    async getByAuthorId(id: number): Promise<Omit<Post, "body">[]> {
-        const posts = await this.prismaService.post.findMany({
-            where: {
-                authorId: id
-            }
-        });
-
-        const res = excludePostBody(posts);
-
-        return res;
-    } 
-
     async getRelated(id: number, limit: number): Promise<Omit<Post, "body">[]> {
-
         const post = await this.prismaService.post.findUnique({
             where: { id }
         });
