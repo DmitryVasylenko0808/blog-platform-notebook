@@ -24,7 +24,7 @@ export class CommentsController {
     }
 
     @UseGuards(AuthGuard)
-    @Delete()
+    @Delete(":commentId")
     async deleteComment(
         @Request() req, 
         @Param("postId", ParseIntPipe) postId: number, 
