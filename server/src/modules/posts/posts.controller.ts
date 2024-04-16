@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, ParseFilePipeBuilder,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Category, Post as PostModel } from '@prisma/client';
-import { GetPostsQueryParams } from './dto/get.posts.query.params';
+import { GetPostsPaginationParams, GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dto/create.post.dto';
@@ -30,8 +30,8 @@ export class PostsController {
     }
 
     @Get(":id/related")
-    async getRelated(@Param("id", ParseIntPipe) id: number, @Query("limit", ParseIntPipe) limit: number) {
-        return await this.postsService.getRelated(id, limit);
+    async getRelated(@Param("id", ParseIntPipe) id: number, @Query() query: GetPostsPaginationParams) {
+        return await this.postsService.getRelated(id, query.offset, query.limit);
     }
 
     @Get("search")

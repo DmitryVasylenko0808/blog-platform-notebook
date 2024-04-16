@@ -56,7 +56,7 @@ export class PostsService {
         return post;
     }
 
-    async getRelated(id: number, limit: number): Promise<Omit<Post, "body">[]> {
+    async getRelated(id: number, offset: number, limit: number): Promise<Omit<Post, "body">[]> {
         const post = await this.prismaService.post.findUnique({
             where: { id }
         });
@@ -66,7 +66,8 @@ export class PostsService {
         }
 
         const posts = await this.prismaService.post.findMany({
-            take: limit,
+            skip: Number(offset),
+            take: Number(limit),
             where: {
                 categoryId: post.categoryId,
                 id: {
