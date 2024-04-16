@@ -1,14 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { AddCommentDto } from './dto/add.comment.dto';
-import { buildCommentsTree } from './comments.helpers';
 import { Comment } from '@prisma/client';
+import { GetCommentsQueryParams } from './dto/get.comments.query.params';
 
 @Injectable()
 export class CommentsService {
     constructor(private prismaService: PrismaService) {}
 
-    async get(postId: number): Promise<Comment[]> {
+    async get(postId: number, query: GetCommentsQueryParams): Promise<Comment[]> {
+        const { offset, limit, parentId } = query;
+
         const post = await this.prismaService.post.findUnique({
             where: {
                 id: postId
@@ -20,12 +22,27 @@ export class CommentsService {
         }
 
         const comments = await this.prismaService.comment.findMany({
-            where: { postId },
+            skip: Number(offset),
+            take: Number(limit),
+            where: { 
+                postId, 
+                parentId: Number(parentId) 
+            },
             include: {
                 author: {
                     select: {
                         id: true,
-                        login: true
+                        login: true,
+                        profile: {
+                            select: {
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
+                _count: {
+                    select: {
+                        children: true
                     }
                 }
             },
@@ -38,9 +55,7 @@ export class CommentsService {
             return [];
         }
 
-        const res = buildCommentsTree(comments);
-
-        return res;
+        return comments;
     }
 
     async add(postId: number, userId: number, body: AddCommentDto): Promise<void> {
