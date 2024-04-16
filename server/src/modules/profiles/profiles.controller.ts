@@ -1,10 +1,10 @@
 import { Body, Controller, Get, HttpStatus, Param, ParseFilePipeBuilder, ParseIntPipe, Patch, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { Profile } from '@prisma/client';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { EditProfileDto } from './dto/edit.profile.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { avatarsStorage } from 'src/config/multer.config';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('profiles')
 export class ProfilesController {

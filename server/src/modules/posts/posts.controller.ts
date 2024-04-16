@@ -5,12 +5,12 @@ import { PostsService } from './posts.service';
 import { Category, Post as PostModel } from '@prisma/client';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dto/create.post.dto';
 import { EditPostDto } from './dto/edit.post.dto';
 import { FavoritePostsService } from './favorite-posts.service';
 import { postsStorage } from 'src/config/multer.config';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('posts')
 export class PostsController {

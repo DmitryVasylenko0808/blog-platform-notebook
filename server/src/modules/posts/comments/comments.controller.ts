@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UseGuards, Request } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { AddCommentDto } from './dto/add.comment.dto';
 import { CommentsService } from './comments.service';
 import { Comment } from '@prisma/client';
+import { AuthGuard } from 'src/modules/auth/auth.guard';
 
 @Controller('posts/:postId/comments')
 export class CommentsController {

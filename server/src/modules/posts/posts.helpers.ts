@@ -1,4 +1,4 @@
-import { Comment, Post } from "@prisma/client";
+import { Post } from "@prisma/client";
 import { GetPostsQueryParams } from "./dto/get.posts.query.params";
 
 export const buildFilter = (filterParams: Omit<GetPostsQueryParams, "limit" | "offset">) => {
