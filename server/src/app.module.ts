@@ -6,7 +6,12 @@ import { ProfilesModule } from './modules/profiles/profiles.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
-  imports: [AuthModule, ProfilesModule, PostsModule, CategoriesModule],
+  imports: [
+    AuthModule, 
+    ProfilesModule, 
+    PostsModule, 
+    CategoriesModule
+  ],
   providers: [PrismaService]
 })
 export class AppModule {}

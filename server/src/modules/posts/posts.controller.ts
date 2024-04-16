@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, ParseFilePipeBuilder,
     ParseIntPipe, Patch, Post, Query, Request, UploadedFile, UseGuards, UseInterceptors 
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { Category, Post as PostModel } from '@prisma/client';
+import { Post as PostModel } from '@prisma/client';
 import { GetPostsPaginationParams, GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
 import { FileInterceptor } from '@nestjs/platform-express';

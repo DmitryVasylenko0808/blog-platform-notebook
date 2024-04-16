@@ -123,7 +123,7 @@ export class PostsService {
         });
     }
 
-    async edit(id: number, authorId: number, body: EditPostDto, imageFilename): Promise<void> {
+    async edit(id: number, authorId: number, body: EditPostDto, imageFilename?: string): Promise<void> {
         const post = await this.prismaService.post.findUnique({
             where: {
                 id,
