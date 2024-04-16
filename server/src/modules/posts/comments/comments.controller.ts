@@ -36,6 +36,17 @@ export class CommentsController {
     }
 
     @UseGuards(AuthGuard)
+    @Post(":commentId/answers") 
+    async addAnswer(
+        @Request() req, 
+        @Param("postId", ParseIntPipe) postId: number, 
+        @Param("commentId", ParseIntPipe) commentId: number,
+        @Body() body: AddCommentDto
+    ): Promise<void> {
+        return await this.commentsService.addAnswer(postId, req.user.id, commentId, body);
+    }
+
+    @UseGuards(AuthGuard)
     @Delete(":commentId")
     async deleteComment(
         @Request() req, 
