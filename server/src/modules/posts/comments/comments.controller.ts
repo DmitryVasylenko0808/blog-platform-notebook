@@ -14,7 +14,15 @@ export class CommentsController {
         @Param("postId", ParseIntPipe) postId: number, 
         @Query() query: GetCommentsQueryParams
     ): Promise<Comment[]> {
-        return await this.commentsService.get(postId, query);
+        return await this.commentsService.get(postId, query.offset, query.limit);
+    }
+
+    @Get(":commentId/answers")
+    async getAnswers(
+        @Param("postId", ParseIntPipe) postId: number,
+        @Param("commentId", ParseIntPipe) commentId: number
+    ): Promise<Comment[]> {
+        return await this.commentsService.getAnswers(postId, commentId);
     }
 
     @UseGuards(AuthGuard)

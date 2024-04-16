@@ -2,15 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { AddCommentDto } from './dto/add.comment.dto';
 import { Comment } from '@prisma/client';
-import { GetCommentsQueryParams } from './dto/get.comments.query.params';
 
 @Injectable()
 export class CommentsService {
     constructor(private prismaService: PrismaService) {}
 
-    async get(postId: number, query: GetCommentsQueryParams): Promise<Comment[]> {
-        const { offset, limit, parentId } = query;
-
+    async get(postId: number, offset: number, limit: number): Promise<Comment[]> {
         const post = await this.prismaService.post.findUnique({
             where: {
                 id: postId
@@ -24,10 +21,7 @@ export class CommentsService {
         const comments = await this.prismaService.comment.findMany({
             skip: Number(offset),
             take: Number(limit),
-            where: { 
-                postId, 
-                parentId: Number(parentId) 
-            },
+            where: { postId },
             include: {
                 author: {
                     select: {
@@ -56,6 +50,59 @@ export class CommentsService {
         }
 
         return comments;
+    }
+
+    async getAnswers(postId: number, commentId: number): Promise<Comment[]> {
+        const post = await this.prismaService.post.findUnique({
+            where: {
+                id: postId
+            }
+        });
+
+        if (!post) {
+            throw new NotFoundException("Post is not found");
+        }
+
+        const comment = await this.prismaService.comment.findUnique({
+            where: {
+                id: commentId,
+                postId
+            }
+        });
+
+        if (!comment) {
+            throw new NotFoundException("Comment is not found");
+        }
+
+        const answers = await this.prismaService.comment.findMany({
+            where: {
+                postId,
+                parentId: commentId
+            },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        login: true,
+                        profile: {
+                            select: {
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
+                _count: {
+                    select: {
+                        children: true
+                    }
+                }
+            },
+            orderBy: {
+                parentId: "desc"
+            }
+        });
+
+        return answers;
     }
 
     async add(postId: number, userId: number, body: AddCommentDto): Promise<void> {
