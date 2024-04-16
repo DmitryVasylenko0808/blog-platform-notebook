@@ -39,11 +39,6 @@ export class PostsController {
         return await this.postsService.search(query);
     }
 
-    @Get("categories")
-    async getCategories(): Promise<Category[]> {
-        return await this.postsService.getCategories();
-    }
-
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor("imageFile", { storage: postsStorage }))
     @Post() 

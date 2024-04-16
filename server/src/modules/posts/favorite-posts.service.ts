@@ -24,13 +24,13 @@ export class FavoritePostsService {
         });
 
         if (isLiked) {
-            await this.dislike(id, userId);
+            await this.unlike(id, userId);
         } else {
             await this.like(id, userId);
         }
     }
 
-    private async dislike(postId: number, userId: number): Promise<void> {
+    private async unlike(postId: number, userId: number): Promise<void> {
         await this.prismaService.likesOnPosts.delete({
             where: {
                 userId_postId: {

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Category, Post } from '@prisma/client';
+import { Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
 import { SearchPostsQueryParams } from './dto/search.posts.query.params';
@@ -100,12 +100,6 @@ export class PostsService {
         const res = excludePostBody(posts);
 
         return res;
-    }
-
-    async getCategories(): Promise<Category[]> {
-        const categories = await this.prismaService.category.findMany();
-
-        return categories;
     }
 
     async create(authorId: number, body: CreatePostDto, imageFilename?: string): Promise<void> {
