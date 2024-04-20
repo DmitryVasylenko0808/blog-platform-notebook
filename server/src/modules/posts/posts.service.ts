@@ -53,6 +53,15 @@ export class PostsService {
             throw new NotFoundException("Post is not found");
         }
 
+        await this.prismaService.post.update({
+            where: { id },
+            data: {
+                viewsCount: {
+                    increment: 1
+                }
+            }
+        });
+
         return post;
     }
 
