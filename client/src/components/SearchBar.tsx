@@ -1,0 +1,18 @@
+import React from "react";
+import { MdOutlineSearch } from "react-icons/md";
+
+const SearchBar = () => {
+  return (
+    <div className="flex gap-1 items-center font-semibold text-[17px]">
+      <input
+        className="py-0.5 px-1 bg-transparent border-b-2 border-notebook-100 outline-none focus:border-notebook-300"
+        aria-label="search"
+      />
+      <button className="" aria-label="search">
+        <MdOutlineSearch size={24} />
+      </button>
+    </div>
+  );
+};
+
+export default SearchBar;
