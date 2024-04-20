@@ -18,6 +18,10 @@ h1, h2, h3, h4 {
     line-height: 140%;
 }
 
+h5, h6 {
+    font-weight: 500;
+}
+
 h1 {
     font-size: 27px;
 }

@@ -4,15 +4,11 @@ import { Post as PostEntity } from "../api/posts/dto/get-posts.dto";
 
 type PostsList = {
   data: PostEntity[];
-  maxHeight?: number;
 };
 
-const PostsList = ({ data, maxHeight }: PostsList) => {
-  const maxHeightClassName =
-    maxHeight && `h-[${maxHeight}px] overflow-y-auto overflow-x-hidden`;
-
+const PostsList = ({ data }: PostsList) => {
   return (
-    <div className={`pr-[267px] flex flex-col gap-12 ${maxHeightClassName}`}>
+    <div className="flex flex-col gap-12">
       {data.map((post) => (
         <Post data={post} />
       ))}
