@@ -1,7 +1,11 @@
 server/dist
 server/node_modules
+<<<<<<< HEAD
 server/build
 
 client/node_modules
 client/build
 client/dist
+=======
+server/build
+>>>>>>> fae7f3bdb489e3d0e076ecec5fe248916df14e9e
