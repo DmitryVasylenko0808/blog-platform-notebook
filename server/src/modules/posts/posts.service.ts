@@ -15,6 +15,8 @@ export class PostsService {
         const { offset, limit, ...filterArg } = query;
         const filter = buildFilter(filterArg);
 
+        console.log(filterArg);
+
         const posts = await this.prismaService.post.findMany({
             skip: Number(offset),
             take: Number(limit), 

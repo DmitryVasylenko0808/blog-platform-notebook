@@ -8,10 +8,10 @@ import Container from "./Container";
 
 const Header = () => {
   return (
-    <div className="pt-6 pb-5 bg-notebook-100">
+    <div className="pt-6 pb-5 bg-notebook-200">
       <Container>
         <div className="flex justify-between items-center">
-          <Link to={"/"}>
+          <Link to="/">
             <Logo />
           </Link>
           <div className="flex justify-center items-center gap-8">

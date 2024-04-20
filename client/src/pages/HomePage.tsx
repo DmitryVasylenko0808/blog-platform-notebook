@@ -1,7 +1,8 @@
 import React from "react";
+import { RecommendedPosts } from "../modules/RecommendedPosts";
 
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return <RecommendedPosts />;
 };
 
 export default HomePage;

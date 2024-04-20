@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       colors: {
         notebook: {
-          100: "#E8F3F3",
+          100: "#F2F8F7",
+          200: "#E8F3F3",
           300: "#00AAA1"
         }
       },

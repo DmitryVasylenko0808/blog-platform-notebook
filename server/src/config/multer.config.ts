@@ -20,10 +20,5 @@ const generateFilename = (file: Express.Multer.File) => {
     const name = `${v4()}${extname(file.originalname)}`;
 
     return name;
-<<<<<<< HEAD
 };
 
-var q= 1;
-=======
-};
->>>>>>> fae7f3bdb489e3d0e076ecec5fe248916df14e9e
