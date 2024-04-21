@@ -4,15 +4,16 @@ type ButtonProps = {
   variant: "primary" | "secondary";
   size: "big" | "small";
   children: React.ReactNode;
-  onClick: React.ComponentProps<"button">["onClick"];
-  isActive?: boolean;
+  type?: React.ComponentProps<"button">["type"];
   disabled?: boolean;
+  onClick?: React.ComponentProps<"button">["onClick"];
 };
 
 const Button = ({
   variant,
   size,
   children,
+  type = "button",
   disabled,
   onClick,
 }: ButtonProps) => {
@@ -31,6 +32,7 @@ const Button = ({
       className={`flex items-center gap-2 ${className} ${sizeClassName} ${disabledClassName}`}
       onClick={onClick}
       disabled={disabled}
+      type={type}
     >
       {children}
     </button>
