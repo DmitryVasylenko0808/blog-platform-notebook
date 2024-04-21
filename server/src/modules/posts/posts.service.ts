@@ -15,8 +15,6 @@ export class PostsService {
         const { offset, limit, ...filterArg } = query;
         const filter = buildFilter(filterArg);
 
-        console.log(filterArg);
-
         const posts = await this.prismaService.post.findMany({
             skip: Number(offset),
             take: Number(limit), 
@@ -84,6 +82,15 @@ export class PostsService {
                 id: {
                     not: post.id
                 } 
+            },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        login: true 
+                    }
+                },
+                category: true
             },
             orderBy: {
                 likesCount: "desc"

@@ -21,7 +21,7 @@ const PostDetails = () => {
 
   return (
     <Container>
-      <div className="pt-20 pb-25">
+      <section className="pt-20 pb-10">
         <div className="mb-4">
           <span className="px-2 py-1 bg-notebook-200 rounded-md text-[#222222] text-[12px] font-normal">
             {data?.category.title}
@@ -82,7 +82,7 @@ const PostDetails = () => {
             {data?.commentsCount}
           </div>
         </div>
-      </div>
+      </section>
     </Container>
   );
 };
