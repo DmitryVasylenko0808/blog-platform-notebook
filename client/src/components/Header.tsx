@@ -8,7 +8,7 @@ import Container from "./Container";
 
 const Header = () => {
   return (
-    <div className="pt-6 pb-5 bg-notebook-200">
+    <header className="pt-6 pb-5 bg-notebook-200">
       <Container>
         <div className="flex justify-between items-center">
           <Link to="/">
@@ -23,7 +23,7 @@ const Header = () => {
           </div>
         </div>
       </Container>
-    </div>
+    </header>
   );
 };
 

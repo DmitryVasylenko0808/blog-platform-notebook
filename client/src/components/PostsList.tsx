@@ -10,7 +10,7 @@ const PostsList = ({ data }: PostsList) => {
   return (
     <div className="flex flex-col gap-12">
       {data.map((post) => (
-        <Post data={post} />
+        <Post data={post} key={post.id} />
       ))}
     </div>
   );

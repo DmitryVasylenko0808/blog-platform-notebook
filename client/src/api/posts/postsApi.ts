@@ -19,7 +19,7 @@ export const postsApi = createApi({
     }),
     endpoints: builder => ({
         getPosts: builder.query<GetPostsDTO, GetPostsParams>({
-            query: ({ limit, offset, type, categoryIds, authorId }) => `/?offset=${offset}&limit=${limit}&type=${type}&category_ids=${categoryIds ?? ""}&authorId=${authorId ?? ""}`
+            query: ({ limit, offset, type, categoryIds, authorId }) => `/?offset=${offset}&limit=${limit}&type=${type}&categoryIds=${categoryIds ?? ""}&authorId=${authorId ?? ""}`
         })
     })
 });
