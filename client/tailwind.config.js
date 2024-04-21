@@ -12,7 +12,9 @@ module.exports = {
           300: "#00AAA1"
         }
       },
-
+      padding: {
+        25: "100px"
+      }
     },
   },
   plugins: [],

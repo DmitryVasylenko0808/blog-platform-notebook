@@ -18,12 +18,17 @@ h1, h2, h3, h4 {
     line-height: 140%;
 }
 
+h2, h3, h4 {
+    margin-bottom: 22px;
+}
+
 h5, h6 {
     font-weight: 500;
 }
 
 h1 {
     font-size: 27px;
+    margin-bottom: 26px;
 }
 
 h2 {
@@ -44,6 +49,36 @@ h5 {
 
 h6 {
     font-size: 15px;
+}
+
+p, pre, ol, ul {
+    margin-bottom: 32px;
+}
+
+ol {
+    list-style: decimal inside;
+}
+
+ul {
+    list-style: square inside;
+}
+
+pre {
+    padding: 16px;
+    background-color: #F3F3F3;
+    border-radius: 8px;
+}
+
+blockquote {
+    margin-bottom: 32px;
+    padding: 32px;
+    background: #F2F8F7;
+    border-radius: 8px;
+    font-style: italic;
+}
+
+blockquote p {
+    margin-bottom: 0;
 }
 
 #root {

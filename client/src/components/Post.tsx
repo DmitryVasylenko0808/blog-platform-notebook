@@ -17,8 +17,8 @@ const Post = ({ data }: PostProps) => {
           {data.category.title}
         </span>
       </div>
-      <Link className="inline-block mb-5" to={""}>
-        <h1>{data.title}</h1>
+      <Link className="inline-block mb-5" to={`/${data.id}`}>
+        <h1 className="mb-0">{data.title}</h1>
       </Link>
       <div className="mb-4 flex items-center gap-2.5">
         <div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ const Post = ({ data }: PostProps) => {
           </div>
         </div>
       </div>
-      <p>{data.description}</p>
+      <p className="mb-0">{data.description}</p>
     </div>
   );
 };
