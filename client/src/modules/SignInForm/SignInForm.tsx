@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSignInMutation } from "../../api/auth/authApi";
 import { useAuth } from "../../hooks/useAuth";
+import WithoutAccount from "./WithoutAccount";
 
 type SignInFormFields = {
   login: string;
@@ -52,12 +53,7 @@ const SignInForm = () => {
             type="password"
           />
         </div>
-        <p className="mb-6">
-          Don't have an account?{" "}
-          <Link to={"/"} className="mx-1 text-notebook-300">
-            Sign In
-          </Link>
-        </p>
+        <WithoutAccount />
         <div className="flex justify-end">
           <Button
             type="submit"
