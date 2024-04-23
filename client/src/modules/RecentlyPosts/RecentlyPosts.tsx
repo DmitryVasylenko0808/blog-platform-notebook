@@ -21,12 +21,6 @@ const RecentlyPosts = () => {
     categoryIds,
   });
 
-  useEffect(() => {
-    setSearchParams({
-      page: "1",
-    });
-  }, []);
-
   const handleClickPage = (pageNumber: number) => {
     setSearchParams({
       page: pageNumber.toString(),
