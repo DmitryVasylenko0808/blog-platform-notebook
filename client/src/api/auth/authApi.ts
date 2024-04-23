@@ -5,6 +5,13 @@ import { GetMeDTO } from "./dto/get-me.dto";
 type SignInParams = {
     login: string;
     password: string;
+};
+
+type SignUpParams = {
+    login: string;
+    password: string;
+    firstName: string;
+    secondName: string;
 }
 
 export const authApi = createApi({
@@ -25,12 +32,25 @@ export const authApi = createApi({
                 method: "POST",
                 body
             })
+        }),
+        signUp: builder.mutation<void, SignUpParams>({
+            query: body => {
+                const formData = new FormData();
+                Object.entries(body).forEach(([key, value]) => formData.append(key, value))
+
+                return {
+                    url: "/sign-up",
+                    method: "POST",
+                    body: formData,
+                    formData: true
+                }
+            }
         })
-    }),
-    tagTypes: ["UNATHORIZED"]
+    })
 });
 
 export const {
     useLazyGetMeQuery,
-    useSignInMutation
+    useSignInMutation,
+    useSignUpMutation
 } = authApi;

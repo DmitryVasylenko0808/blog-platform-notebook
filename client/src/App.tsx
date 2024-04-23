@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import BasicLayout from "./layouts/BasicLayout";
 import PostDetailsPage from "./pages/PostDetailsPage";
 import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
 import { useAuth } from "./hooks/useAuth";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="/:id" element={<PostDetailsPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
       </Route>
     </Routes>
   );

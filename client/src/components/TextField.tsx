@@ -12,7 +12,7 @@ type TextFieldProps = {
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   ({ error, ...inputProps }, ref) => {
     return (
-      <div>
+      <div className="w-full">
         <input
           {...inputProps}
           ref={ref}
