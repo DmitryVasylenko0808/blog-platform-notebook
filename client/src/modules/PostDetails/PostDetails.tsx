@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Markdown from "react-markdown";
 import { useParams } from "react-router";
 import { useGetPostDetailsQuery } from "../../api/posts/postsApi";
+import { API_URL_POSTS_IMAGES } from "../../consts";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ const PostDetails = () => {
 
   return (
     <Container>
-      <section className="pt-20 pb-10">
+      <section className="px-16 pt-20 pb-10">
         <div className="mb-4">
           <span className="px-2 py-1 bg-notebook-200 rounded-md text-[#222222] text-[12px] font-normal">
             {data?.category.title}
@@ -65,10 +66,14 @@ const PostDetails = () => {
         </div>
 
         {data?.imageUrl && (
-          <img className="w-full h-[500px]" src="" alt="image" />
+          <img
+            className="w-full h-[500px] mb-8 rounded-md"
+            src={`API_URL_POSTS_IMAGES/${data.imageUrl}`}
+            alt="image"
+          />
         )}
 
-        <p className="">{data?.description}</p>
+        <p>{data?.description}</p>
 
         <Markdown>{data?.body}</Markdown>
 
