@@ -15,7 +15,7 @@ const Tags = () => {
     tags = tags ? tags.split(",") : [];
 
     setSelectedtags(tags.map((t) => parseFloat(t)));
-  }, []);
+  }, [searchParams.get("categoryIds")]);
 
   const handleClickCategory = (id: number) => {
     let updatedselectedtags;
