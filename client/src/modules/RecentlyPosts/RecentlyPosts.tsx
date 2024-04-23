@@ -41,12 +41,13 @@ const RecentlyPosts = () => {
           <div className="">
             <Title filledText="Recently" text="Posted" />
             <Pagination
+              totalPages={data ? Math.ceil(data?.totalCount / limit) : 0}
+              countSiblings={1}
               currentPage={page}
-              onPrevClick={() => handleClickPage(page - 1)}
-              onNextClick={() => handleClickPage(page + 1)}
+              onPageClick={handleClickPage}
             >
               <div className="pr-[320px] pb-20">
-                <PostsList data={data || []} />
+                <PostsList data={data?.posts || []} />
               </div>
             </Pagination>
           </div>

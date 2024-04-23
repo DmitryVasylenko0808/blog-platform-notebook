@@ -14,7 +14,7 @@ const FeaturedPosts = () => {
     <div>
       <Title filledText="Featured" text="This Month" />
       <div className="pr-[225px] flex flex-col gap-12 h-[480px] overflow-y-auto overflow-x-hidden">
-        {data && data.map((post) => <Post data={post} key={post.id} />)}
+        {data && data.posts.map((post) => <Post data={post} key={post.id} />)}
       </div>
     </div>
   );

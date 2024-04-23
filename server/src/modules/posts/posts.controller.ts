@@ -11,6 +11,7 @@ import { EditPostDto } from './dto/edit.post.dto';
 import { FavoritePostsService } from './favorite-posts.service';
 import { postsStorage } from 'src/config/multer.config';
 import { AuthGuard } from '../auth/auth.guard';
+import { GetPostsResponse } from './types';
 
 @Controller('posts')
 export class PostsController {
@@ -20,7 +21,7 @@ export class PostsController {
     ) {}
 
     @Get()
-    async get(@Query() query: GetPostsQueryParams): Promise<Omit<PostModel, "body">[]> {
+    async get(@Query() query: GetPostsQueryParams): Promise<GetPostsResponse> {
         return await this.postsService.get(query);
     }
 

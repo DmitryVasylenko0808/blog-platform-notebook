@@ -25,4 +25,7 @@ export type Post = {
     category: Category;
 };
 
-export type GetPostsDTO = Post[];
+export type GetPostsDTO = {
+    totalCount: number; 
+    posts: Post[];
+};

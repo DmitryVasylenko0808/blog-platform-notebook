@@ -31,7 +31,7 @@ const SignInForm = () => {
         authorize(res.token);
         navigate("/");
       })
-      .catch(() => alert("Error"));
+      .catch((err) => alert(err.data.message));
   };
 
   const isDisabledButton = isLoading || isSubmitting;

@@ -15,7 +15,9 @@ const PopularPosts = () => {
       <Title filledText="Populer" text="Posted"></Title>
       <div className="pr-4 flex flex-col gap-7 h-[480px] overflow-y-auto overflow-x-hidden">
         {data &&
-          data.map((post) => <PopularPostCard data={post} key={post.id} />)}
+          data.posts.map((post) => (
+            <PopularPostCard data={post} key={post.id} />
+          ))}
       </div>
     </div>
   );

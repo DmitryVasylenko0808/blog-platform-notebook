@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { GetPostsResponse } from "./types";
 import { Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
@@ -11,7 +12,7 @@ import { EditPostDto } from './dto/edit.post.dto';
 export class PostsService {
     constructor(private prismaService: PrismaService) {}
 
-    async get(query: GetPostsQueryParams): Promise<Omit<Post, "body">[]> {
+    async get(query: GetPostsQueryParams): Promise<GetPostsResponse> {
         const { offset, limit, ...filterArg } = query;
         const filter = buildFilter(filterArg);
 
@@ -32,7 +33,14 @@ export class PostsService {
 
         const res = excludePostBody(posts);
 
-        return res;
+        const totalCount = await this.prismaService.post.count({
+            where: filter.where
+        });
+
+        return {
+            totalCount,
+            posts: res
+        };
     }
 
     async getOne(id: number): Promise<Post> {
