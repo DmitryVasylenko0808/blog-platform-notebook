@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSignInMutation } from "../../api/auth/authApi";
-import { useAppSelector } from "../../redux/hooks";
+import { useAuth } from "../../hooks/useAuth";
 
 type SignInFormFields = {
   login: string;
@@ -14,6 +14,7 @@ type SignInFormFields = {
 
 const SignInForm = () => {
   const navigate = useNavigate();
+  const { authorize } = useAuth();
   const {
     register,
     handleSubmit,
@@ -26,7 +27,7 @@ const SignInForm = () => {
     triggerSignIn(data)
       .unwrap()
       .then((res) => {
-        localStorage.setItem("token", res.token);
+        authorize(res.token);
         navigate("/");
       })
       .catch(() => alert("Error"));

@@ -17,16 +17,14 @@ export const authApi = createApi({
     }),
     endpoints: builder => ({
         getMe: builder.query<GetMeDTO, void>({
-            query: () => "/me",
-            providesTags: ["UNATHORIZED"]
+            query: () => "/me"
         }),
         signIn: builder.mutation<SignInDTO, SignInParams>({
             query: body => ({
                 url: "/sign-in",
                 method: "POST",
                 body
-            }),
-            invalidatesTags: ["UNATHORIZED"]
+            })
         })
     }),
     tagTypes: ["UNATHORIZED"]
