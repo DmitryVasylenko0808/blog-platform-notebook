@@ -22,14 +22,14 @@ const PopularPostCard = ({ data }: PopularPostCardProps) => {
       </Link>
       <div className="flex items-center gap-2.5">
         <div className="flex items-center gap-2">
-          <Link to={""}>
+          <Link to={`/profile/${data.authorId}`}>
             <img
               src="https://avatarfiles.alphacoders.com/114/114650.jpg"
               alt="user_avatar"
               className="w-[18px] h-[18px] rounded-full"
             />
           </Link>
-          <Link to={""}>
+          <Link to={`/profile/${data.authorId}`}>
             <span className="text-[12px] text-[#777777]">
               {data.author.login}
             </span>

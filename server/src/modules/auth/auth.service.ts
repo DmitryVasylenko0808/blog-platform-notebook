@@ -16,9 +16,6 @@ export class AuthService {
         const { login, password, ...other } = data;
         const { avatarFile, ...profile } = other;
 
-        console.log(profile);
-        console.log(avatarFileName);
-
         const user = await this.prismaService.user.findUnique({
             where: { login }
         });
