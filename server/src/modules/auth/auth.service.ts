@@ -13,7 +13,11 @@ export class AuthService {
     ) {}
 
     async signUp(data: SignUpDto, avatarFileName?: string): Promise<void> {
-        const { login, password, ...profile } = data;
+        const { login, password, ...other } = data;
+        const { avatarFile, ...profile } = other;
+
+        console.log(profile);
+        console.log(avatarFileName);
 
         const user = await this.prismaService.user.findUnique({
             where: { login }

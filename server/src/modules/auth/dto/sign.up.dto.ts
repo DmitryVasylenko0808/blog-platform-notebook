@@ -3,5 +3,5 @@ export class SignUpDto {
     readonly password: string;
     readonly firstName: string;
     readonly secondName: string;
-    readonly description?: string;
+    readonly avatarFile?: string;
 }

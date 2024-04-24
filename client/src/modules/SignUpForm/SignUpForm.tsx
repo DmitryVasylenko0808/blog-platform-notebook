@@ -6,6 +6,7 @@ import HaveAccount from "./HaveAccount";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router";
 import { useSignUpMutation } from "../../api/auth/authApi";
+import SelectAvatar from "./SelectAvatar";
 
 type SignUpFormFields = {
   login: string;
@@ -13,6 +14,7 @@ type SignUpFormFields = {
   passwordConfirmation: string;
   firstName: string;
   secondName: string;
+  avatarFile?: FileList;
 };
 
 const SignUpForm = () => {
@@ -22,7 +24,11 @@ const SignUpForm = () => {
   const [triggerSignUp, { isLoading }] = useSignUpMutation();
 
   const submitHandler = (data: SignUpFormFields) => {
-    const { passwordConfirmation, ...signUpData } = data;
+    const { passwordConfirmation, avatarFile, ...other } = data;
+
+    const signUpData = avatarFile
+      ? { avatarFile: avatarFile[0], ...other }
+      : other;
 
     triggerSignUp(signUpData)
       .unwrap()
@@ -90,6 +96,7 @@ const SignUpForm = () => {
               error={formState.errors.secondName?.message}
             />
           </div>
+          <SelectAvatar {...register("avatarFile")} />
           <HaveAccount />
           <div className="flex justify-end">
             <Button
