@@ -4,6 +4,7 @@ type TextFieldProps = {
   name: React.ComponentProps<"input">["name"];
   type?: React.ComponentProps<"input">["type"];
   placeholder?: string;
+  defaultValue?: string;
   error?: string;
   onChange: React.ComponentProps<"input">["onChange"];
   onBlur: React.ComponentProps<"input">["onBlur"];

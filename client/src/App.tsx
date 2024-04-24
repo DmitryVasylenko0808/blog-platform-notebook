@@ -7,6 +7,8 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import { useAuth } from "./hooks/useAuth";
 import ProfilePage from "./pages/ProfilePage";
+import EditProfilePage from "./pages/EditProfilePage";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   const { isAuthenticated, token, authorize } = useAuth();
@@ -25,6 +27,9 @@ function App() {
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/profile/:profileId" element={<ProfilePage />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/edit-profile" element={<EditProfilePage />} />
+        </Route>
       </Route>
     </Routes>
   );
