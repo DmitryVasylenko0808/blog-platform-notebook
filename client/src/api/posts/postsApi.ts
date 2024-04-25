@@ -42,13 +42,16 @@ export const postsApi = createApi({
     tagTypes: ["Post"],
     endpoints: builder => ({
         getPosts: builder.query<GetPostsDTO, GetPostsParams>({
-            query: ({ limit, offset, type, categoryIds, authorId }) => `/?offset=${offset}&limit=${limit}&type=${type}&categoryIds=${categoryIds ?? ""}&authorId=${authorId ?? ""}`
+            query: ({ limit, offset, type, categoryIds, authorId }) => `/?offset=${offset}&limit=${limit}&type=${type}&categoryIds=${categoryIds ?? ""}&authorId=${authorId ?? ""}`,
+            providesTags: ["Post"]
         }),
         getRelatedPosts: builder.query<GetRelatedPostsDTO, GetRelatedPostsParams>({
-            query: ({ id, offset, limit }) => `/${id}/related/?offset=${offset}&limit=${limit}`
+            query: ({ id, offset, limit }) => `/${id}/related/?offset=${offset}&limit=${limit}`,
+            providesTags: ["Post"]
         }),
         getPostDetails: builder.query<GetPostDelailsDTO, string>({
-            query: (id) => `/${id}/details`
+            query: (id) => `/${id}/details`,
+            providesTags: ["Post"]
         }),
         createPost: builder.mutation<void, CreatePostParams>({
             query: (body) => {

@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from "react";
-import Container from "../../components/Container";
+import { useGetCategoriesQuery } from "../../api/categories/categoriesApi";
+import { useCreatePostMutation } from "../../api/posts/postsApi";
 import { useForm } from "react-hook-form";
+import Container from "../../components/Container";
 import TextField from "../../components/TextField";
 import TextArea from "../../components/TextArea";
 import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
-import { useGetCategoriesQuery } from "../../api/categories/categoriesApi";
 import Tag from "../../components/Tag";
 import Button from "../../components/Button";
-import { useCreatePostMutation } from "../../api/posts/postsApi";
+import "easymde/dist/easymde.min.css";
 
 type CreatePostFormFields = {
   title: string;

@@ -3,14 +3,34 @@ import Container from "../../components/Container";
 import { MdModeComment, MdFavorite, MdRemoveRedEye } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Markdown from "react-markdown";
-import { useParams } from "react-router";
-import { useGetPostDetailsQuery } from "../../api/posts/postsApi";
+import { useNavigate, useParams } from "react-router";
+import {
+  useDeletePostMutation,
+  useGetPostDetailsQuery,
+} from "../../api/posts/postsApi";
 import { API_URL_POSTS_IMAGES } from "../../consts";
+import Button from "../../components/Button";
+import { useAuth } from "../../hooks/useAuth";
 
 const PostDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const { data, isLoading, error } = useGetPostDetailsQuery(id as string);
+  const [triggerDeletePost] = useDeletePostMutation();
+
+  const handleDeletePost = () => {
+    if (data?.id) {
+      triggerDeletePost(data.id.toString())
+        .unwrap()
+        .then(() => {
+          alert("Post is successfully deleted");
+          navigate("/");
+        })
+        .catch((err) => alert(err.data.message));
+    }
+  };
 
   if (isLoading) {
     return <div className="">Loading</div>;
@@ -19,6 +39,8 @@ const PostDetails = () => {
   if (error) {
     alert("Error");
   }
+
+  const isUserPost = data?.authorId === user?.id;
 
   return (
     <Container>
@@ -64,6 +86,20 @@ const PostDetails = () => {
             </div>
           </div>
         </div>
+
+        {isUserPost && (
+          <div className="mb-8 flex gap-5">
+            <Link
+              to={``}
+              className="px-[26px] py-[13px] bg-notebook-300 border border-notebook-300 rounded font-normal text-white"
+            >
+              Edit Post
+            </Link>
+            <Button variant="primary" size="small" onClick={handleDeletePost}>
+              Delete Post
+            </Button>
+          </div>
+        )}
 
         {data?.imageUrl && (
           <img
