@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Title from "../../components/Title";
 import { useGetCategoriesQuery } from "../../api/categories/categoriesApi";
-import Tag from "./Tag";
+import Tag from "../../components/Tag";
 import { useSearchParams } from "react-router-dom";
 
 const Tags = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Category } from "../../api/categories/dto/get-categories.dto";
+import { Category } from "../api/categories/dto/get-categories.dto";
 
 type TagProps = {
   data: Category;

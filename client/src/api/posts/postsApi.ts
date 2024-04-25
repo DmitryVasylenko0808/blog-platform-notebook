@@ -17,6 +17,20 @@ type GetRelatedPostsParams = {
     limit: number;
 }
 
+type CreatePostParams = {
+    title: string;
+    description: string;
+    body: string;
+    categoryId: number;
+};
+
+type EditPostParams = {
+    title: string;
+    description: string;
+    body: string;
+    categoryId: number;
+};
+
 export const postsApi = createApi({
     reducerPath: "postsApi",
     baseQuery: fetchBaseQuery({
@@ -25,6 +39,7 @@ export const postsApi = createApi({
             headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
         }
     }),
+    tagTypes: ["Post"],
     endpoints: builder => ({
         getPosts: builder.query<GetPostsDTO, GetPostsParams>({
             query: ({ limit, offset, type, categoryIds, authorId }) => `/?offset=${offset}&limit=${limit}&type=${type}&categoryIds=${categoryIds ?? ""}&authorId=${authorId ?? ""}`
@@ -34,6 +49,41 @@ export const postsApi = createApi({
         }),
         getPostDetails: builder.query<GetPostDelailsDTO, string>({
             query: (id) => `/${id}/details`
+        }),
+        createPost: builder.mutation<void, CreatePostParams>({
+            query: (body) => {
+                const formData = new FormData();
+                Object.entries(body).forEach(([key, value]) => formData.append(key, value.toString()));
+
+                return {
+                    url: "/",
+                    method: "POST",
+                    body: formData,
+                    formData: true
+                }
+            },
+            invalidatesTags: ["Post"]
+        }),
+        editPost: builder.mutation<void, EditPostParams>({
+            query: (body) => {
+                const formData = new FormData();
+                Object.entries(body).forEach(([key, value]) => formData.append(key, value.toString()));
+
+                return {
+                    url: "/",
+                    method: "PATCH",
+                    body: formData,
+                    formData: true
+                }
+            },
+            invalidatesTags: ["Post"]
+        }),
+        deletePost: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Post"]
         })
     })
 });
@@ -41,5 +91,8 @@ export const postsApi = createApi({
 export const {
     useGetPostsQuery,
     useGetRelatedPostsQuery,
-    useGetPostDetailsQuery
+    useGetPostDetailsQuery,
+    useCreatePostMutation,
+    useEditPostMutation,
+    useDeletePostMutation
 } = postsApi;

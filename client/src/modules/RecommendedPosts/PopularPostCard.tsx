@@ -17,7 +17,7 @@ const PopularPostCard = ({ data }: PopularPostCardProps) => {
           {data.category.title}
         </span>
       </div>
-      <Link className="inline-block mb-4" to={""}>
+      <Link className="inline-block mb-4" to={`/${data.id}`}>
         <h5>{data.title}</h5>
       </Link>
       <div className="flex items-center gap-2.5">

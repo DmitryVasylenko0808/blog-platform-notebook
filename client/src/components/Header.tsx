@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { MdOutlineLogin, MdOutlineLogout } from "react-icons/md";
+import { BsPencilSquare } from "react-icons/bs";
 import Container from "./Container";
 import { useAuth } from "../hooks/useAuth";
 
@@ -22,7 +23,13 @@ const Header = () => {
             <ThemeSwitcher />
             {isAuthenticated ? (
               <div className="flex items-center gap-4">
-                <Link to={"/"} className="text-notebook-300 font-medium">
+                <Link to="/create-post" className="mx-4">
+                  <BsPencilSquare size={20} />
+                </Link>
+                <Link
+                  to={`/profile/${user?.id}`}
+                  className="text-notebook-300 font-medium"
+                >
                   {user?.login}
                 </Link>
                 <button

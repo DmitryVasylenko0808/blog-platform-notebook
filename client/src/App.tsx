@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
+import { useAuth } from "./hooks/useAuth";
 import { Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
 import BasicLayout from "./layouts/BasicLayout";
 import PostDetailsPage from "./pages/PostDetailsPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import { useAuth } from "./hooks/useAuth";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import RequireAuth from "./components/RequireAuth";
+import CreatePostPage from "./pages/CreatePostPage";
 
 function App() {
   const { isAuthenticated, token, authorize } = useAuth();
@@ -29,6 +30,7 @@ function App() {
         <Route path="/profile/:profileId" element={<ProfilePage />} />
         <Route element={<RequireAuth />}>
           <Route path="/edit-profile" element={<EditProfilePage />} />
+          <Route path="/create-post" element={<CreatePostPage />} />
         </Route>
       </Route>
     </Routes>
