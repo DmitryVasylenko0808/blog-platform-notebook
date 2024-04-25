@@ -10,6 +10,7 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import RequireAuth from "./components/RequireAuth";
 import CreatePostPage from "./pages/CreatePostPage";
+import EditPostPage from "./pages/EditPostPage";
 
 function App() {
   const { isAuthenticated, token, authorize } = useAuth();
@@ -31,6 +32,7 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route path="/edit-profile" element={<EditProfilePage />} />
           <Route path="/create-post" element={<CreatePostPage />} />
+          <Route path="/:id/edit" element={<EditPostPage />} />
         </Route>
       </Route>
     </Routes>

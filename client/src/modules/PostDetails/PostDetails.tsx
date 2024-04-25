@@ -90,7 +90,7 @@ const PostDetails = () => {
         {isUserPost && (
           <div className="mb-8 flex gap-5">
             <Link
-              to={``}
+              to={`/${data?.id}/edit`}
               className="px-[26px] py-[13px] bg-notebook-300 border border-notebook-300 rounded font-normal text-white"
             >
               Edit Post

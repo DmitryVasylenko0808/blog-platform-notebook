@@ -74,7 +74,7 @@ export class PostsController {
                 })
         ) file?: Express.Multer.File
     ) {
-        return await this.postsService.edit(id, req.user.id, body, file.filename);
+        return await this.postsService.edit(id, req.user.id, body, file?.filename);
     }
 
     @UseGuards(AuthGuard)

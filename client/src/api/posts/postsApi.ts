@@ -25,6 +25,7 @@ type CreatePostParams = {
 };
 
 type EditPostParams = {
+    id: number;
     title: string;
     description: string;
     body: string;
@@ -68,12 +69,14 @@ export const postsApi = createApi({
             invalidatesTags: ["Post"]
         }),
         editPost: builder.mutation<void, EditPostParams>({
-            query: (body) => {
+            query: ({ id, ...body}) => {
+                console.log(body);
+
                 const formData = new FormData();
                 Object.entries(body).forEach(([key, value]) => formData.append(key, value.toString()));
 
                 return {
-                    url: "/",
+                    url: `/${id}`,
                     method: "PATCH",
                     body: formData,
                     formData: true
