@@ -39,6 +39,16 @@ type GetCommentsParams = {
     limit: number;
 }
 
+type AddCommentParams = {
+    postId: string;
+    body: string;
+}
+
+type DeleteCommentParams = {
+    postId: string;
+    commentId: string;
+}
+
 export const postsApi = createApi({
     reducerPath: "postsApi",
     baseQuery: fetchBaseQuery({
@@ -101,6 +111,21 @@ export const postsApi = createApi({
         getComments: builder.query<GetCommentsDTO, GetCommentsParams>({
             query: ({ postId, offset, limit }) => `/${postId}/comments?offset=${offset}&limit=${limit}`,
             providesTags: ["Comment"]
+        }),
+        addComment: builder.mutation<void, AddCommentParams>({
+            query: ({ postId, body }) => ({
+                url: `/${postId}/comments`,
+                method: "POST",
+                body: { body }
+            }),
+            invalidatesTags: ["Comment"]
+        }),
+        deleteComment: builder.mutation<void, DeleteCommentParams>({
+            query: ({ postId, commentId }) => ({
+                url: `/${postId}/comments/${commentId}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Comment"]
         })
     })
 });
@@ -112,5 +137,7 @@ export const {
     useCreatePostMutation,
     useEditPostMutation,
     useDeletePostMutation,
-    useGetCommentsQuery
+    useGetCommentsQuery,
+    useAddCommentMutation,
+    useDeleteCommentMutation
 } = postsApi;

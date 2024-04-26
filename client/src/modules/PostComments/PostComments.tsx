@@ -5,6 +5,7 @@ import PostCommentsList from "./PostCommentsList";
 import { useGetCommentsQuery } from "../../api/posts/postsApi";
 import { useParams } from "react-router";
 import Pagination from "../../components/Pagination";
+import AddCommentForm from "./AddCommentForm";
 
 const PostComments = () => {
   const limit = 8;
@@ -41,6 +42,7 @@ const PostComments = () => {
             <h4 className="mb-0">{data?.totalCount} Comments</h4>
           </div>
           <ToggleFavoritePost />
+          <AddCommentForm />
           <Pagination
             totalPages={data ? Math.ceil(data?.totalCount / limit) : 0}
             currentPage={page + 1}

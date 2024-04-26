@@ -1,13 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { MdReply } from "react-icons/md";
+import { FaTrash } from "react-icons/fa6";
 import { Comment } from "../../api/posts/dto/get-comments.dto";
+import { useAuth } from "../../hooks/useAuth";
+import { useDeleteCommentMutation } from "../../api/posts/postsApi";
 
 type CommentItemProps = {
   data: Comment;
 };
 
 const CommentItem = ({ data }: CommentItemProps) => {
+  const { id } = useParams();
+  const { isAuthenticated, user } = useAuth();
+
+  const [triggerDeleteComment, { isLoading }] = useDeleteCommentMutation();
+
+  const handleDeleteComment = () => {
+    triggerDeleteComment({
+      postId: id as string,
+      commentId: data.id.toString(),
+    })
+      .unwrap()
+      .catch((err) => alert(err.data.message));
+  };
+
+  const isUserComment = data.authorId === user?.id;
+
   return (
     <li className="flex gap-4">
       <Link className="min-w-[50px]" to={`/profile/${data.authorId}`}>
@@ -25,7 +44,16 @@ const CommentItem = ({ data }: CommentItemProps) => {
               <span className="">{data.author.login}</span>
             </Link>
           </div>
-          <div className="">
+          <div className="flex flex-col gap-5">
+            {isUserComment && (
+              <button
+                className=""
+                aria-label="reply comment"
+                onClick={handleDeleteComment}
+              >
+                <FaTrash size={22} />
+              </button>
+            )}
             <button className="" aria-label="reply comment">
               <MdReply size={28} />
             </button>
