@@ -112,17 +112,6 @@ const PostDetails = () => {
         <p>{data?.description}</p>
 
         <Markdown>{data?.body}</Markdown>
-
-        <div className="mb-7 px-6 flex gap-8">
-          <div className="flex items-center gap-3 text-[#777777] text-[22px]">
-            <MdFavorite size={28} />
-            {data?.likesCount}
-          </div>
-          <div className="flex items-center gap-3 text-[#777777] text-[22px]">
-            <MdModeComment size={28} />
-            {data?.commentsCount}
-          </div>
-        </div>
       </section>
     </Container>
   );

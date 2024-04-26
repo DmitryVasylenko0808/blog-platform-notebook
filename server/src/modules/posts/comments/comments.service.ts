@@ -23,6 +23,8 @@ export class CommentsService {
                         login: true,
                         profile: {
                             select: {
+                                firstName: true,
+                                secondName: true,
                                 avatarUrl: true
                             }
                         }
@@ -67,6 +69,8 @@ export class CommentsService {
                         login: true,
                         profile: {
                             select: {
+                                firstName: true,
+                                secondName: true,
                                 avatarUrl: true
                             }
                         }
