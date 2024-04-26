@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { AddCommentDto } from './dto/add.comment.dto';
 import { Comment } from '@prisma/client';
+import { GetAnswersResponse, GetCommentsResponse } from './types';
 
 @Injectable()
 export class CommentsService {
     constructor(private prismaService: PrismaService) {}
 
-    async get(postId: number, offset: number, limit: number): Promise<Comment[]> {
+    async get(postId: number, offset: number, limit: number): Promise<GetCommentsResponse> {
         const comments = await this.prismaService.comment.findMany({
             skip: Number(offset),
             take: Number(limit),
@@ -38,15 +39,23 @@ export class CommentsService {
             }
         });
 
-        if (!comments.length) {
-            return [];
-        }
+        const totalCount = await this.prismaService.comment.count({
+            where: {
+                postId,
+                parentId: null
+            }
+        });
 
-        return comments;
+        return {
+            totalCount,
+            comments
+        };
     }
 
-    async getAnswers(postId: number, commentId: number): Promise<Comment[]> {
+    async getAnswers(postId: number, commentId: number, offset: number, limit: number): Promise<GetAnswersResponse> {
         const answers = await this.prismaService.comment.findMany({
+            skip: Number(offset),
+            take: Number(limit),
             where: {
                 postId,
                 parentId: commentId
@@ -74,7 +83,17 @@ export class CommentsService {
             }
         });
 
-        return answers;
+        const totalCount = await this.prismaService.comment.count({
+            where: {
+                postId,
+                parentId: commentId
+            }
+        });
+
+        return {
+            totalCount,
+            answers
+        };
     }
 
     async add(postId: number, userId: number, body: AddCommentDto): Promise<void> {

@@ -4,6 +4,7 @@ import { CommentsService } from './comments.service';
 import { Comment } from '@prisma/client';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { GetCommentsQueryParams } from './dto/get.comments.query.params';
+import { GetAnswersResponse, GetCommentsResponse } from './types';
 
 @Controller('posts/:postId/comments')
 export class CommentsController {
@@ -13,16 +14,17 @@ export class CommentsController {
     async getComments(
         @Param("postId", ParseIntPipe) postId: number, 
         @Query() query: GetCommentsQueryParams
-    ): Promise<Comment[]> {
+    ): Promise<GetCommentsResponse> {
         return await this.commentsService.get(postId, query.offset, query.limit);
     }
 
     @Get(":commentId/answers")
     async getAnswers(
         @Param("postId", ParseIntPipe) postId: number,
-        @Param("commentId", ParseIntPipe) commentId: number
-    ): Promise<Comment[]> {
-        return await this.commentsService.getAnswers(postId, commentId);
+        @Param("commentId", ParseIntPipe) commentId: number,
+        @Query() query: GetCommentsQueryParams
+    ): Promise<GetAnswersResponse> {
+        return await this.commentsService.getAnswers(postId, commentId, query.offset, query.limit);
     }
 
     @UseGuards(AuthGuard)
