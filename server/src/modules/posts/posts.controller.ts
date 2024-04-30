@@ -36,7 +36,7 @@ export class PostsController {
     }
 
     @Get("search")
-    async search(@Query() query: SearchPostsQueryParams): Promise<Omit<PostModel, "body">[]> {
+    async search(@Query() query: SearchPostsQueryParams): Promise<GetPostsResponse> {
         return await this.postsService.search(query);
     }
 

@@ -37,7 +37,7 @@ const PostComments = () => {
     <section className="pt-2 pb-10">
       <Container>
         <div className="mb-4 px-16">
-          <div className="py-2.5 border-b border-[#C4C4C4]">
+          <div className="mb-10 py-2.5 border-b border-[#C4C4C4]">
             <h4 className="mb-0">{data?.totalCount} Comments</h4>
           </div>
           <AddCommentForm />

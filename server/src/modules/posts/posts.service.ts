@@ -117,7 +117,7 @@ export class PostsService {
         return res;
     }
 
-    async search(query: SearchPostsQueryParams): Promise<Omit<Post, "body">[]> {
+    async search(query: SearchPostsQueryParams): Promise<GetPostsResponse> {
         const { value, limit, offset } = query;
 
         const posts = await this.prismaService.post.findMany({
@@ -127,12 +127,32 @@ export class PostsService {
                 title: {
                     contains: value
                 }
-            }
+            },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        login: true 
+                    }
+                },
+                category: true
+            },
         });
 
         const res = excludePostBody(posts);
 
-        return res;
+        const totalCount = await this.prismaService.post.count({
+            where: {
+                title: {
+                    contains: value
+                }
+            }
+        });
+
+        return {
+            totalCount,
+            posts: res
+        };
     }
 
     async create(authorId: number, body: CreatePostDto, imageFilename?: string): Promise<void> {

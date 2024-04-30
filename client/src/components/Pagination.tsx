@@ -64,6 +64,7 @@ const Pagination = ({
                 : pageItemClassName
             }
             onClick={() => onPageClick(pageNumber)}
+            key={`pageNumber ${pageNumber}`}
           >
             {pageNumber}
           </li>

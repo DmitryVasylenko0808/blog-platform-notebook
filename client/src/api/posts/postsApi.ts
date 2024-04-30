@@ -49,6 +49,12 @@ type DeleteCommentParams = {
     commentId: string;
 };
 
+type SearchPostsParams = {
+    value: string;
+    offset: number;
+    limit: number;
+};
+
 export const postsApi = createApi({
     reducerPath: "postsApi",
     baseQuery: fetchBaseQuery({
@@ -106,12 +112,16 @@ export const postsApi = createApi({
             }),
             invalidatesTags: ["Post"]
         }),
-        toggleFavoritePost: builder.mutation<unknown, unknown>({
+        toggleFavoritePost: builder.mutation<void, string>({
             query: (id) => ({
                 url: `/${id}/toggle-favorite`,
                 method: "PATCH"
             }),
             invalidatesTags: ["Post"]
+        }),
+        searchPosts: builder.query<GetPostsDTO, SearchPostsParams>({
+            query: ({ value, offset, limit }) => `/search?value=${value}&offset=${offset}&limit=${limit}`,
+            providesTags: ["Post"]
         }),
         getComments: builder.query<GetCommentsDTO, GetCommentsParams>({
             query: ({ postId, offset, limit }) => `/${postId}/comments?offset=${offset}&limit=${limit}`,
@@ -143,6 +153,7 @@ export const {
     useEditPostMutation,
     useDeletePostMutation,
     useToggleFavoritePostMutation,
+    useSearchPostsQuery,
     useGetCommentsQuery,
     useAddCommentMutation,
     useDeleteCommentMutation
