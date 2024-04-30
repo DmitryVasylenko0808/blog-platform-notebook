@@ -41,7 +41,7 @@ type GetCommentsParams = {
 
 type GetAnswersParams = { 
     postId: string; 
-    commentId: string 
+    commentId: string; 
 };
 
 type AddCommentParams = {
@@ -59,6 +59,12 @@ type SearchPostsParams = {
     offset: number;
     limit: number;
 };
+
+type AddAnswerParams = {
+    postId: string; 
+    commentId: string;
+    body: string;
+}
 
 export const postsApi = createApi({
     reducerPath: "postsApi",
@@ -150,6 +156,14 @@ export const postsApi = createApi({
         getAnswers: builder.query<GetCommentsDTO, GetAnswersParams>({
             query: ({ postId, commentId }) => `/${postId}/comments/${commentId}/answers`,
             providesTags: ["Comment"]
+        }),
+        addAnswer: builder.mutation<void, AddAnswerParams>({
+            query: ({ postId, commentId, body }) => ({
+                url: `/${postId}/comments/${commentId}/answers`,
+                method: "POST",
+                body: { body }
+            }),
+            invalidatesTags: ["Comment"]
         })
     })
 });
@@ -166,5 +180,6 @@ export const {
     useGetCommentsQuery,
     useAddCommentMutation,
     useDeleteCommentMutation,
-    useLazyGetAnswersQuery
+    useLazyGetAnswersQuery,
+    useAddAnswerMutation
 } = postsApi;

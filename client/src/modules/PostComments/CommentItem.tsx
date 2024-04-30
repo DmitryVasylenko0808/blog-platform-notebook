@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { MdReply } from "react-icons/md";
 import { FaTrash } from "react-icons/fa6";
@@ -10,6 +10,7 @@ import {
 } from "../../api/posts/postsApi";
 import PostCommentsList from "./PostCommentsList";
 import LoadAnswersButton from "./LoadAnswersButton";
+import ModalReplyCommentForm from "./ModalReplyCommentForm";
 
 type CommentItemProps = {
   data: Comment;
@@ -17,13 +18,18 @@ type CommentItemProps = {
 
 const CommentItem = ({ data }: CommentItemProps) => {
   const { id } = useParams();
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useAuth();
+
+  const [isOpenReplyModal, setIsOpenReplyModal] = useState<boolean>(false);
 
   const [triggerDeleteComment, { isLoading }] = useDeleteCommentMutation();
   const [
     triggerGetAnswers,
     { data: answersData, isLoading: isLoadingAnswers },
   ] = useLazyGetAnswersQuery();
+
+  const handleOpenReplyModal = () => setIsOpenReplyModal(true);
+  const handleCloseReplyModal = () => setIsOpenReplyModal(false);
 
   const handleDeleteComment = () => {
     triggerDeleteComment({
@@ -50,7 +56,7 @@ const CommentItem = ({ data }: CommentItemProps) => {
     data._count.children && !answersData?.comments;
 
   return (
-    <li className="flex gap-4">
+    <div className="flex gap-4">
       <Link className="min-w-[50px]" to={`/profile/${data.authorId}`}>
         <img
           className="w-[50px] h-[50px]"
@@ -61,18 +67,17 @@ const CommentItem = ({ data }: CommentItemProps) => {
       <div className="flex-auto">
         <div className="mb-4 flex">
           <div className="flex-auto">
-            <h5 className="">{`${data.author.profile.firstName} ${data.author.profile.secondName}`}</h5>
+            <h5>{`${data.author.profile.firstName} ${data.author.profile.secondName}`}</h5>
             <Link to={`/profile/${data.authorId}`}>
               <span className="">{data.author.login}</span>
             </Link>
           </div>
           <div className="flex flex-col gap-5">
-            <button className="" aria-label="reply comment">
+            <button aria-label="reply comment" onClick={handleOpenReplyModal}>
               <MdReply size={28} />
             </button>
             {isUserComment && (
               <button
-                className=""
                 aria-label="reply comment"
                 onClick={handleDeleteComment}
                 disabled={isLoading}
@@ -82,8 +87,8 @@ const CommentItem = ({ data }: CommentItemProps) => {
             )}
           </div>
         </div>
-        <div className="">
-          <p className="">{data.body}</p>
+        <div>
+          <p>{data.body}</p>
           {answersData && <PostCommentsList data={answersData.comments} />}
           {isShowLoadAnswersButton ? (
             <LoadAnswersButton
@@ -93,7 +98,10 @@ const CommentItem = ({ data }: CommentItemProps) => {
           ) : null}
         </div>
       </div>
-    </li>
+      {isOpenReplyModal && (
+        <ModalReplyCommentForm comment={data} onClose={handleCloseReplyModal} />
+      )}
+    </div>
   );
 };
 
