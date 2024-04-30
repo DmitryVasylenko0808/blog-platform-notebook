@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { AddCommentDto } from './dto/add.comment.dto';
 import { Comment } from '@prisma/client';
-import { GetAnswersResponse, GetCommentsResponse } from './types';
+import { GetCommentsResponse } from './types';
 
 @Injectable()
 export class CommentsService {
@@ -54,10 +54,8 @@ export class CommentsService {
         };
     }
 
-    async getAnswers(postId: number, commentId: number, offset: number, limit: number): Promise<GetAnswersResponse> {
+    async getAnswers(postId: number, commentId: number): Promise<GetCommentsResponse> {
         const answers = await this.prismaService.comment.findMany({
-            skip: Number(offset),
-            take: Number(limit),
             where: {
                 postId,
                 parentId: commentId
@@ -96,7 +94,7 @@ export class CommentsService {
 
         return {
             totalCount,
-            answers
+            comments: answers
         };
     }
 

@@ -39,6 +39,11 @@ type GetCommentsParams = {
     limit: number;
 };
 
+type GetAnswersParams = { 
+    postId: string; 
+    commentId: string 
+};
+
 type AddCommentParams = {
     postId: string;
     body: string;
@@ -141,6 +146,10 @@ export const postsApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ["Comment"]
+        }),
+        getAnswers: builder.query<GetCommentsDTO, GetAnswersParams>({
+            query: ({ postId, commentId }) => `/${postId}/comments/${commentId}/answers`,
+            providesTags: ["Comment"]
         })
     })
 });
@@ -156,5 +165,6 @@ export const {
     useSearchPostsQuery,
     useGetCommentsQuery,
     useAddCommentMutation,
-    useDeleteCommentMutation
+    useDeleteCommentMutation,
+    useLazyGetAnswersQuery
 } = postsApi;
