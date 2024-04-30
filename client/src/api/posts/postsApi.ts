@@ -37,17 +37,17 @@ type GetCommentsParams = {
     postId: string;
     offset: number;
     limit: number;
-}
+};
 
 type AddCommentParams = {
     postId: string;
     body: string;
-}
+};
 
 type DeleteCommentParams = {
     postId: string;
     commentId: string;
-}
+};
 
 export const postsApi = createApi({
     reducerPath: "postsApi",
@@ -86,9 +86,7 @@ export const postsApi = createApi({
             invalidatesTags: ["Post"]
         }),
         editPost: builder.mutation<void, EditPostParams>({
-            query: ({ id, ...body}) => {
-                console.log(body);
-
+            query: ({ id, ...body }) => {
                 const formData = new FormData();
                 Object.entries(body).forEach(([key, value]) => formData.append(key, value.toString()));
 
@@ -105,6 +103,13 @@ export const postsApi = createApi({
             query: (id) => ({
                 url: `/${id}`,
                 method: "DELETE"
+            }),
+            invalidatesTags: ["Post"]
+        }),
+        toggleFavoritePost: builder.mutation<unknown, unknown>({
+            query: (id) => ({
+                url: `/${id}/toggle-favorite`,
+                method: "PATCH"
             }),
             invalidatesTags: ["Post"]
         }),
@@ -137,6 +142,7 @@ export const {
     useCreatePostMutation,
     useEditPostMutation,
     useDeletePostMutation,
+    useToggleFavoritePostMutation,
     useGetCommentsQuery,
     useAddCommentMutation,
     useDeleteCommentMutation

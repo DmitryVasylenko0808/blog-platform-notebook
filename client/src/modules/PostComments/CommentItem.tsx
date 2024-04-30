@@ -50,6 +50,7 @@ const CommentItem = ({ data }: CommentItemProps) => {
                 className=""
                 aria-label="reply comment"
                 onClick={handleDeleteComment}
+                disabled={isLoading}
               >
                 <FaTrash size={22} />
               </button>

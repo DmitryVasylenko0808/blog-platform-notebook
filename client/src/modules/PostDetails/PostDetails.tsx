@@ -1,16 +1,17 @@
 import React from "react";
-import Container from "../../components/Container";
-import { MdModeComment, MdFavorite, MdRemoveRedEye } from "react-icons/md";
-import { Link } from "react-router-dom";
-import Markdown from "react-markdown";
 import { useNavigate, useParams } from "react-router";
 import {
   useDeletePostMutation,
   useGetPostDetailsQuery,
+  useToggleFavoritePostMutation,
 } from "../../api/posts/postsApi";
-import { API_URL_POSTS_IMAGES } from "../../consts";
-import Button from "../../components/Button";
 import { useAuth } from "../../hooks/useAuth";
+import { MdModeComment, MdFavorite, MdRemoveRedEye } from "react-icons/md";
+import { Link } from "react-router-dom";
+import Container from "../../components/Container";
+import Markdown from "react-markdown";
+import Button from "../../components/Button";
+import ToggleFavoritePost from "./ToggleFavoritePost";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -19,6 +20,7 @@ const PostDetails = () => {
 
   const { data, isLoading, error } = useGetPostDetailsQuery(id as string);
   const [triggerDeletePost] = useDeletePostMutation();
+  const [triggerToggleFavoritePost] = useToggleFavoritePostMutation();
 
   const handleDeletePost = () => {
     if (data?.id) {
@@ -32,6 +34,14 @@ const PostDetails = () => {
     }
   };
 
+  const handleToggleFavoritePost = () => {
+    if (data?.id) {
+      triggerToggleFavoritePost(data.id.toString())
+        .unwrap()
+        .catch((err) => alert(err.data.message));
+    }
+  };
+
   if (isLoading) {
     return <div className="">Loading</div>;
   }
@@ -41,6 +51,8 @@ const PostDetails = () => {
   }
 
   const isUserPost = data?.authorId === user?.id;
+  const isFavoritePost =
+    !!user && !!data?.likers.find((l) => l.userId === user.id);
 
   return (
     <Container>
@@ -112,6 +124,11 @@ const PostDetails = () => {
         <p>{data?.description}</p>
 
         <Markdown>{data?.body}</Markdown>
+
+        <ToggleFavoritePost
+          isFavorite={isFavoritePost}
+          onFavorite={handleToggleFavoritePost}
+        />
       </section>
     </Container>
   );

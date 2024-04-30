@@ -23,4 +23,5 @@ export type GetPostDelailsDTO = {
 	categoryId: number;
 	author: Author;
 	category: Category;
+	likers: { userId: number }[];
 }

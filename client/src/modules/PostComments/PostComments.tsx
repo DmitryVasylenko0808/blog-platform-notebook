@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Container from "../../components/Container";
-import ToggleFavoritePost from "./ToggleFavoritePost";
 import PostCommentsList from "./PostCommentsList";
 import { useGetCommentsQuery } from "../../api/posts/postsApi";
 import { useParams } from "react-router";
@@ -41,7 +40,6 @@ const PostComments = () => {
           <div className="py-2.5 border-b border-[#C4C4C4]">
             <h4 className="mb-0">{data?.totalCount} Comments</h4>
           </div>
-          <ToggleFavoritePost />
           <AddCommentForm />
           <Pagination
             totalPages={data ? Math.ceil(data?.totalCount / limit) : 0}

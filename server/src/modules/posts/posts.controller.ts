@@ -11,7 +11,7 @@ import { EditPostDto } from './dto/edit.post.dto';
 import { FavoritePostsService } from './favorite-posts.service';
 import { postsStorage } from 'src/config/multer.config';
 import { AuthGuard } from '../auth/auth.guard';
-import { GetPostsResponse } from './types';
+import { GetOnePostResponse, GetPostsResponse } from './types';
 
 @Controller('posts')
 export class PostsController {
@@ -26,7 +26,7 @@ export class PostsController {
     }
 
     @Get(":id/details")
-    async getById(@Param("id", ParseIntPipe) id: number): Promise<PostModel> {
+    async getById(@Param("id", ParseIntPipe) id: number): Promise<GetOnePostResponse> {
         return await this.postsService.getOne(id);
     }
 

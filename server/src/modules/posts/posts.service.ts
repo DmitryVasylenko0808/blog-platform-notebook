@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { GetPostsResponse } from "./types";
+import { GetOnePostResponse, GetPostsResponse } from "./types";
 import { Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GetPostsQueryParams } from './dto/get.posts.query.params';
@@ -43,7 +43,7 @@ export class PostsService {
         };
     }
 
-    async getOne(id: number): Promise<Post> {
+    async getOne(id: number): Promise<GetOnePostResponse> {
         const post = await this.prismaService.post.findUnique({
             where: { id },
             include: {
@@ -61,6 +61,11 @@ export class PostsService {
             throw new NotFoundException("Post is not found");
         }
 
+        const likers = await this.prismaService.likesOnPosts.findMany({
+            where: { postId: id },
+            select: { userId: true }
+        });
+
         await this.prismaService.post.update({
             where: { id },
             data: {
@@ -70,7 +75,9 @@ export class PostsService {
             }
         });
 
-        return post;
+        const res = { ...post, likers };
+
+        return res;
     }
 
     async getRelated(id: number, offset: number, limit: number): Promise<Omit<Post, "body">[]> {
