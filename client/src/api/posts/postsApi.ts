@@ -22,7 +22,8 @@ type CreatePostParams = {
     title: string;
     description: string;
     body: string;
-    categoryId: number;
+    categoryId: string;
+    imageFile?: File;
 };
 
 type EditPostParams = {
@@ -91,7 +92,7 @@ export const postsApi = createApi({
         createPost: builder.mutation<void, CreatePostParams>({
             query: (body) => {
                 const formData = new FormData();
-                Object.entries(body).forEach(([key, value]) => formData.append(key, value.toString()));
+                Object.entries(body).forEach(([key, value]) => formData.append(key, value));
 
                 return {
                     url: "/",

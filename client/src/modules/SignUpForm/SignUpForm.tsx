@@ -6,7 +6,7 @@ import HaveAccount from "./HaveAccount";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router";
 import { useSignUpMutation } from "../../api/auth/authApi";
-import SelectAvatar from "./SelectAvatar";
+import ImageFileSelect from "../../components/ImageFileSelect";
 
 type SignUpFormFields = {
   login: string;
@@ -96,7 +96,7 @@ const SignUpForm = () => {
               error={formState.errors.secondName?.message}
             />
           </div>
-          <SelectAvatar {...register("avatarFile")} />
+          <ImageFileSelect {...register("avatarFile")} variant="avatar" />
           <HaveAccount />
           <div className="flex justify-end">
             <Button

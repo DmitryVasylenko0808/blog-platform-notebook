@@ -9,12 +9,14 @@ import SimpleMDE from "react-simplemde-editor";
 import Tag from "../../components/Tag";
 import Button from "../../components/Button";
 import "easymde/dist/easymde.min.css";
+import ImageFileSelect from "../../components/ImageFileSelect";
 
 type CreatePostFormFields = {
   title: string;
   description: string;
   body: string;
   categoryId: number;
+  imageFile?: FileList;
 };
 
 const CreatePostForm = () => {
@@ -44,11 +46,20 @@ const CreatePostForm = () => {
     } else if (!categoryId) {
       alert("Error. Category is not selected");
     } else {
-      const reqData = {
-        ...data,
-        body,
-        categoryId,
-      };
+      const { imageFile, ...other } = data;
+
+      const reqData = imageFile
+        ? {
+            ...other,
+            imageFile: imageFile[0],
+            body,
+            categoryId: categoryId.toString(),
+          }
+        : {
+            ...other,
+            body,
+            categoryId: categoryId.toString(),
+          };
 
       triggerCreatePost(reqData)
         .unwrap()
@@ -81,6 +92,7 @@ const CreatePostForm = () => {
               placeholder="Input description..."
               error={errors.description?.message}
             />
+            <ImageFileSelect {...register("imageFile")} variant="post" />
             <SimpleMDE
               value={body}
               onChange={handleChangeBody}

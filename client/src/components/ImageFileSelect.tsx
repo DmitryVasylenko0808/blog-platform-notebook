@@ -1,13 +1,14 @@
 import React, { forwardRef, useState } from "react";
 import { ImFilePicture } from "react-icons/im";
 
-type SelectAvatarProps = {
+type ImageFileSelectProps = {
+  variant: "avatar" | "post";
   name: React.ComponentProps<"input">["name"];
   onBlur: React.ComponentProps<"input">["onBlur"];
 };
 
-const SelectAvatar = forwardRef<HTMLInputElement, SelectAvatarProps>(
-  ({ ...inputProps }, ref) => {
+const ImageFileSelect = forwardRef<HTMLInputElement, ImageFileSelectProps>(
+  ({ variant, ...inputProps }, ref) => {
     const [previewImage, setPreviewImage] = useState<string>("");
 
     const handleShowPreview = (
@@ -27,18 +28,29 @@ const SelectAvatar = forwardRef<HTMLInputElement, SelectAvatarProps>(
       }
     };
 
+    let width, height;
+    if (variant === "avatar") {
+      width = 250;
+      height = 250;
+    } else if (variant === "post") {
+      width = 500;
+      height = 250;
+    }
+
     return (
       <label className="mx-auto cursor-pointer">
         {previewImage ? (
           <img
-            className="w-[250px] h-[250px]"
+            className={`w-[${width}px] h-[${height}px]`}
             src={previewImage}
             alt="preview avatar"
           />
         ) : (
-          <div className="flex flex-col items-center justify-center gap-4 w-[250px] h-[250px] border-2 border-dashed border-notebook-250 rounded text-[##C4C4C4]">
+          <div
+            className={`w-[${width}px] h-[${height}px] flex flex-col items-center justify-center gap-4 border-2 border-dashed border-notebook-250 rounded text-[##C4C4C4]`}
+          >
             <ImFilePicture size={32} />
-            Select image for your avatar
+            Select image for your {variant}
           </div>
         )}
         <input
@@ -53,4 +65,4 @@ const SelectAvatar = forwardRef<HTMLInputElement, SelectAvatarProps>(
   }
 );
 
-export default SelectAvatar;
+export default ImageFileSelect;

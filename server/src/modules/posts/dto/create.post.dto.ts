@@ -3,4 +3,5 @@ export class CreatePostDto {
     description: string;
     body: string;
     categoryId: number;
+    imageFile?: string;
 }
