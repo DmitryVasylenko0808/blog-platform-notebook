@@ -14,10 +14,13 @@ import Tag from "../../components/Tag";
 import Button from "../../components/Button";
 import "easymde/dist/easymde.min.css";
 import { useParams } from "react-router";
+import ImageFileSelect from "../../components/ImageFileSelect";
+import { POSTS_IMAGES_URL } from "../../constants/api";
 
 type EditPostFormFields = {
   title: string;
   description: string;
+  imageFile?: FileList;
 };
 
 const EditPostForn = () => {
@@ -62,12 +65,22 @@ const EditPostForn = () => {
     } else if (!categoryId) {
       alert("Error. Category is not selected");
     } else {
-      const reqData = {
-        id: data?.id as number,
-        ...editData,
-        body,
-        categoryId,
-      };
+      const { imageFile, ...other } = editData;
+
+      const reqData = imageFile
+        ? {
+            id: data?.id as number,
+            ...other,
+            imageFile: imageFile[0],
+            body,
+            categoryId: categoryId.toString(),
+          }
+        : {
+            id: data?.id as number,
+            ...other,
+            body,
+            categoryId: categoryId.toString(),
+          };
 
       triggerEditPost(reqData)
         .unwrap()
@@ -80,6 +93,9 @@ const EditPostForn = () => {
     return <div>Loading...</div>;
   }
 
+  const previewImageSrc = data?.imageUrl
+    ? POSTS_IMAGES_URL + data?.imageUrl
+    : "";
   const isDisabledButton = isLoading || isSubmitting || isEditing;
 
   return (
@@ -103,6 +119,11 @@ const EditPostForn = () => {
               })}
               placeholder="Input description..."
               error={errors.description?.message}
+            />
+            <ImageFileSelect
+              {...register("imageFile")}
+              variant="post"
+              previewImageSrc={previewImageSrc}
             />
             <SimpleMDE
               value={body}

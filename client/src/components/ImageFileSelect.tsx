@@ -1,15 +1,22 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { ImFilePicture } from "react-icons/im";
 
 type ImageFileSelectProps = {
   variant: "avatar" | "post";
   name: React.ComponentProps<"input">["name"];
+  previewImageSrc?: string;
   onBlur: React.ComponentProps<"input">["onBlur"];
 };
 
 const ImageFileSelect = forwardRef<HTMLInputElement, ImageFileSelectProps>(
-  ({ variant, ...inputProps }, ref) => {
+  ({ variant, previewImageSrc, ...inputProps }, ref) => {
     const [previewImage, setPreviewImage] = useState<string>("");
+
+    useEffect(() => {
+      if (previewImageSrc) {
+        setPreviewImage(previewImageSrc);
+      }
+    }, []);
 
     const handleShowPreview = (
       e: React.ChangeEvent,

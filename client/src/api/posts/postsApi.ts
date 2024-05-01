@@ -31,7 +31,8 @@ type EditPostParams = {
     title: string;
     description: string;
     body: string;
-    categoryId: number;
+    categoryId: string;
+    imageFile?: File;
 };
 
 type GetCommentsParams = {
@@ -106,7 +107,7 @@ export const postsApi = createApi({
         editPost: builder.mutation<void, EditPostParams>({
             query: ({ id, ...body }) => {
                 const formData = new FormData();
-                Object.entries(body).forEach(([key, value]) => formData.append(key, value.toString()));
+                Object.entries(body).forEach(([key, value]) => formData.append(key, value));
 
                 return {
                     url: `/${id}`,
