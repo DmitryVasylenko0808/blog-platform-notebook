@@ -17,6 +17,7 @@ import {
   NULL_AVATAR_URL,
   POSTS_IMAGES_URL,
 } from "../../constants/api";
+import { formatDate } from "../../utils/formatDate";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -46,6 +47,8 @@ const PostDetails = () => {
         .catch((err) => alert(err.data.message));
     }
   };
+
+  const date = formatDate(data?.createdAt);
 
   if (isLoading) {
     return <div className="">Loading</div>;
@@ -91,7 +94,7 @@ const PostDetails = () => {
             </Link>
           </div>
           <span className="text-[12px] text-[#777777]">|</span>
-          <span className="text-[12px] text-[#777777]">{`${data?.createdAt}`}</span>
+          <span className="text-[12px] text-[#777777]">{date}</span>
           <span className="text-[12px] text-[#777777]">|</span>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 text-[#777777] text-[12px]">
