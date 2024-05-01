@@ -5,6 +5,7 @@ type EditProfileParams = {
     firstName: string;
     secondName: string;
     description: string;
+    avatarFile?: File;
 }
 
 export const profilesApi = createApi({

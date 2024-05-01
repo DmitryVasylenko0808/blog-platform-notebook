@@ -10,11 +10,14 @@ import {
 } from "../../api/profilesApi/profilesApi";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import ImageFileSelect from "../../components/ImageFileSelect";
+import { AVATARS_URL } from "../../constants/api";
 
 type EditProfileFormFields = {
   firstName: string;
   secondName: string;
   description: string;
+  avatarFile?: FileList;
 };
 
 const EditProfileForm = () => {
@@ -46,7 +49,13 @@ const EditProfileForm = () => {
   }, []);
 
   const submitHandler = (data: EditProfileFormFields) => {
-    triggerEditProfile(data)
+    const { avatarFile, ...other } = data;
+
+    const reqData = avatarFile
+      ? { ...other, avatarFile: avatarFile[0] }
+      : other;
+
+    triggerEditProfile(reqData)
       .unwrap()
       .then(() => {
         alert("Profile is successfully edited");
@@ -55,6 +64,7 @@ const EditProfileForm = () => {
       .catch((err) => alert(err.data.message));
   };
 
+  const previewImageSrc = data?.avatarUrl ? AVATARS_URL + data.avatarUrl : "";
   const isDisabledButton = isUpdatingProfile || isSubmitting;
 
   if (isLoading) {
@@ -92,6 +102,11 @@ const EditProfileForm = () => {
               {...register("description")}
               rows={5}
               placeholder="Description"
+            />
+            <ImageFileSelect
+              {...register("avatarFile")}
+              variant="avatar"
+              previewImageSrc={previewImageSrc}
             />
           </div>
           <div className="flex justify-end">

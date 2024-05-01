@@ -16,7 +16,7 @@ const ImageFileSelect = forwardRef<HTMLInputElement, ImageFileSelectProps>(
       if (previewImageSrc) {
         setPreviewImage(previewImageSrc);
       }
-    }, []);
+    }, [previewImageSrc]);
 
     const handleShowPreview = (
       e: React.ChangeEvent,
