@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Post as PostEntity } from "../../api/posts/dto/get-posts.dto";
 import { MdModeComment, MdFavorite, MdRemoveRedEye } from "react-icons/md";
+import { AVATARS_URL, NULL_AVATAR_URL } from "../../constants/api";
 
 type PopularPostCardProps = {
   data: PostEntity;
@@ -9,6 +10,10 @@ type PopularPostCardProps = {
 
 const PopularPostCard = ({ data }: PopularPostCardProps) => {
   const date = `${data.createdAt}`;
+
+  const avatarImageSrc = data?.author.profile.avatarUrl
+    ? AVATARS_URL + data.author.profile.avatarUrl
+    : NULL_AVATAR_URL;
 
   return (
     <div className="w-[360px] p-6 bg-white rounded-md">
@@ -24,7 +29,7 @@ const PopularPostCard = ({ data }: PopularPostCardProps) => {
         <div className="flex items-center gap-2">
           <Link to={`/profile/${data.authorId}`}>
             <img
-              src="https://avatarfiles.alphacoders.com/114/114650.jpg"
+              src={avatarImageSrc}
               alt="user_avatar"
               className="w-[18px] h-[18px] rounded-full"
             />

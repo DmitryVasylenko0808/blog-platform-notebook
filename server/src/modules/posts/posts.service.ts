@@ -23,7 +23,12 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        login: true 
+                        login: true,
+                        profile: {
+                            select: {
+                                avatarUrl: true
+                            }
+                        } 
                     }
                 },
                 category: true
@@ -50,7 +55,12 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        login: true
+                        login: true,
+                        profile: {
+                            select: {
+                                avatarUrl: true
+                            }
+                        } 
                     }
                 },
                 category: true
@@ -102,7 +112,12 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        login: true 
+                        login: true,
+                        profile: {
+                            select: {
+                                avatarUrl: true
+                            }
+                        }  
                     }
                 },
                 category: true
@@ -132,7 +147,12 @@ export class PostsService {
                 author: {
                     select: {
                         id: true,
-                        login: true 
+                        login: true,
+                        profile: {
+                            select: {
+                                avatarUrl: true
+                            }
+                        }  
                     }
                 },
                 category: true

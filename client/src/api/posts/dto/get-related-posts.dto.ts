@@ -1,6 +1,9 @@
 type Author = {
     id: number;
     login: string;
+    profile: {
+		avatarUrl: string;
+	};
 };
 
 type Category = {

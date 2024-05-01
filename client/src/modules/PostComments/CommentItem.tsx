@@ -11,6 +11,7 @@ import {
 import PostCommentsList from "./PostCommentsList";
 import LoadAnswersButton from "./LoadAnswersButton";
 import ModalReplyCommentForm from "./ModalReplyCommentForm";
+import { AVATARS_URL, NULL_AVATAR_URL } from "../../constants/api";
 
 type CommentItemProps = {
   data: Comment;
@@ -55,12 +56,16 @@ const CommentItem = ({ data }: CommentItemProps) => {
   const isShowLoadAnswersButton =
     data._count.children && !answersData?.comments;
 
+  const avatarImageSrc = data?.author.profile.avatarUrl
+    ? AVATARS_URL + data.author.profile.avatarUrl
+    : NULL_AVATAR_URL;
+
   return (
     <div className="flex gap-4">
       <Link className="min-w-[50px]" to={`/profile/${data.authorId}`}>
         <img
           className="w-[50px] h-[50px]"
-          src="https://avatarfiles.alphacoders.com/114/114650.jpg"
+          src={avatarImageSrc}
           alt="user avatar"
         />
       </Link>

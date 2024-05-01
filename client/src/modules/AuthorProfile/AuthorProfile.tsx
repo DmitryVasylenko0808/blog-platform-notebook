@@ -4,6 +4,7 @@ import { useGetProfileQuery } from "../../api/profilesApi/profilesApi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { AVATARS_URL, NULL_AVATAR_URL } from "../../constants/api";
 
 const AuthorProfile = () => {
   const { profileId } = useParams();
@@ -24,13 +25,17 @@ const AuthorProfile = () => {
     profileId !== null &&
     parseFloat(profileId) === user?.id;
 
+  const avatarImageSrc = data?.avatarUrl
+    ? AVATARS_URL + data.avatarUrl
+    : NULL_AVATAR_URL;
+
   return (
     <section className="pt-20 pb-25 bg-notebook-100">
       <Container>
         <div className="flex gap-[30px]">
           <img
-            className="min-w-[526px] min-h-[515px]"
-            src="https://avatarfiles.alphacoders.com/114/114650.jpg"
+            className="w-[526px] h-[515px] max-w-[526px] max-h-[515px]"
+            src={avatarImageSrc}
             alt="avatar user"
           />
           <div className="flex-auto pt-[35px] pr-20">

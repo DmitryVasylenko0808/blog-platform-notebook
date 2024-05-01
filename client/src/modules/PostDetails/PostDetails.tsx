@@ -12,6 +12,11 @@ import Container from "../../components/Container";
 import Markdown from "react-markdown";
 import Button from "../../components/Button";
 import ToggleFavoritePost from "./ToggleFavoritePost";
+import {
+  AVATARS_URL,
+  NULL_AVATAR_URL,
+  POSTS_IMAGES_URL,
+} from "../../constants/api";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -54,6 +59,11 @@ const PostDetails = () => {
   const isFavoritePost =
     !!user && !!data?.likers.find((l) => l.userId === user.id);
 
+  const avatarImageSrc = data?.author.profile.avatarUrl
+    ? AVATARS_URL + data.author.profile.avatarUrl
+    : NULL_AVATAR_URL;
+  const postImageSrc = data?.imageUrl ? POSTS_IMAGES_URL + data.imageUrl : "";
+
   return (
     <Container>
       <section className="px-16 pt-20 pb-10">
@@ -69,7 +79,7 @@ const PostDetails = () => {
           <div className="flex items-center gap-2">
             <Link to={`/profile/${data?.authorId}`}>
               <img
-                src="https://avatarfiles.alphacoders.com/114/114650.jpg"
+                src={avatarImageSrc}
                 alt="user_avatar"
                 className="w-[18px] h-[18px] rounded-full"
               />
@@ -116,8 +126,8 @@ const PostDetails = () => {
         {data?.imageUrl && (
           <img
             className="w-full h-[500px] mb-8 rounded-md"
-            src={`API_URL_POSTS_IMAGES/${data.imageUrl}`}
-            alt="image"
+            src={postImageSrc}
+            alt="post image"
           />
         )}
 
