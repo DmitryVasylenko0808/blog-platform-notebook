@@ -1,18 +1,23 @@
 import React from "react";
 import { Comment } from "../../api/posts/dto/get-comments.dto";
 import { Link } from "react-router-dom";
+import { AVATARS_URL, NULL_AVATAR_URL } from "../../constants/api";
 
 type ReplyToCommentProps = {
   comment: Comment;
 };
 
 const ReplyToComment = ({ comment }: ReplyToCommentProps) => {
+  const avatarImageSrc = comment?.author.profile.avatarUrl
+    ? AVATARS_URL + comment.author.profile.avatarUrl
+    : NULL_AVATAR_URL;
+
   return (
     <div className="mb-5 w-[640px] flex gap-4">
       <Link className="min-w-[50px]" to={`/profile/${comment.authorId}`}>
         <img
           className="w-[50px] h-[50px]"
-          src="https://avatarfiles.alphacoders.com/114/114650.jpg"
+          src={avatarImageSrc}
           alt="user avatar"
         />
       </Link>

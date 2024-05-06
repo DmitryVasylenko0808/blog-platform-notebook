@@ -44,7 +44,13 @@ const PostDetails = () => {
     if (data?.id) {
       triggerToggleFavoritePost(data.id.toString())
         .unwrap()
-        .catch((err) => alert(err.data.message));
+        .catch((err) => {
+          alert(err.data.message);
+
+          if (err.data.statusCode === 401) {
+            navigate("/sign-in");
+          }
+        });
     }
   };
 
