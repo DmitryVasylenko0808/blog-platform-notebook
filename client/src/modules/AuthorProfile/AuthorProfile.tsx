@@ -1,16 +1,18 @@
 import React from "react";
-import Container from "../../components/Container";
 import { useGetProfileQuery } from "../../api/profilesApi/profilesApi";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { AVATARS_URL, NULL_AVATAR_URL } from "../../constants/api";
+import { useImage } from "../../hooks/useImage";
+import Container from "../../components/Container";
+import { Link } from "react-router-dom";
 
 const AuthorProfile = () => {
   const { profileId } = useParams();
   const { user } = useAuth();
 
   const { data, isLoading, error } = useGetProfileQuery(profileId as string);
+
+  const avatarImageSrc = useImage("avatar", data?.avatarUrl);
 
   if (isLoading) {
     return (
@@ -24,10 +26,6 @@ const AuthorProfile = () => {
     profileId !== undefined &&
     profileId !== null &&
     parseFloat(profileId) === user?.id;
-
-  const avatarImageSrc = data?.avatarUrl
-    ? AVATARS_URL + data.avatarUrl
-    : NULL_AVATAR_URL;
 
   return (
     <section className="pt-20 pb-25 bg-notebook-100">

@@ -1,16 +1,14 @@
 import React from "react";
+import { useImage } from "../../hooks/useImage";
 import { Comment } from "../../api/posts/dto/get-comments.dto";
 import { Link } from "react-router-dom";
-import { AVATARS_URL, NULL_AVATAR_URL } from "../../constants/api";
 
 type ReplyToCommentProps = {
   comment: Comment;
 };
 
 const ReplyToComment = ({ comment }: ReplyToCommentProps) => {
-  const avatarImageSrc = comment?.author.profile.avatarUrl
-    ? AVATARS_URL + comment.author.profile.avatarUrl
-    : NULL_AVATAR_URL;
+  const avatarImageSrc = useImage("avatar", comment?.author.profile.avatarUrl);
 
   return (
     <div className="mb-5 w-[640px] flex gap-4">

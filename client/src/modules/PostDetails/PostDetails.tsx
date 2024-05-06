@@ -6,18 +6,14 @@ import {
   useToggleFavoritePostMutation,
 } from "../../api/posts/postsApi";
 import { useAuth } from "../../hooks/useAuth";
+import { useImage } from "../../hooks/useImage";
+import { formatDate } from "../../utils/formatDate";
 import { MdModeComment, MdFavorite, MdRemoveRedEye } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Container from "../../components/Container";
 import Markdown from "react-markdown";
 import Button from "../../components/Button";
 import ToggleFavoritePost from "./ToggleFavoritePost";
-import {
-  AVATARS_URL,
-  NULL_AVATAR_URL,
-  POSTS_IMAGES_URL,
-} from "../../constants/api";
-import { formatDate } from "../../utils/formatDate";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -27,6 +23,9 @@ const PostDetails = () => {
   const { data, isLoading, error } = useGetPostDetailsQuery(id as string);
   const [triggerDeletePost] = useDeletePostMutation();
   const [triggerToggleFavoritePost] = useToggleFavoritePostMutation();
+
+  const avatarImageSrc = useImage("avatar", data?.author.profile.avatarUrl);
+  const postImageSrc = useImage("post", data?.imageUrl);
 
   const handleDeletePost = () => {
     if (data?.id) {
@@ -67,11 +66,6 @@ const PostDetails = () => {
   const isUserPost = data?.authorId === user?.id;
   const isFavoritePost =
     !!user && !!data?.likers.find((l) => l.userId === user.id);
-
-  const avatarImageSrc = data?.author.profile.avatarUrl
-    ? AVATARS_URL + data.author.profile.avatarUrl
-    : NULL_AVATAR_URL;
-  const postImageSrc = data?.imageUrl ? POSTS_IMAGES_URL + data.imageUrl : "";
 
   return (
     <Container>

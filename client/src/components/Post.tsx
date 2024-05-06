@@ -1,9 +1,9 @@
 import React from "react";
+import { formatDate } from "../utils/formatDate";
+import { useImage } from "../hooks/useImage";
 import { Link } from "react-router-dom";
 import { MdModeComment, MdFavorite, MdRemoveRedEye } from "react-icons/md";
 import { Post as PostEntity } from "../api/posts/dto/get-posts.dto";
-import { AVATARS_URL, NULL_AVATAR_URL } from "../constants/api";
-import { formatDate } from "../utils/formatDate";
 
 type PostProps = {
   data: PostEntity;
@@ -12,9 +12,7 @@ type PostProps = {
 const Post = ({ data }: PostProps) => {
   const date = formatDate(data.createdAt);
 
-  const avatarImageSrc = data?.author.profile.avatarUrl
-    ? AVATARS_URL + data.author.profile.avatarUrl
-    : NULL_AVATAR_URL;
+  const avatarImageSrc = useImage("avatar", data?.author.profile.avatarUrl);
 
   return (
     <div className="w-[615px]">
