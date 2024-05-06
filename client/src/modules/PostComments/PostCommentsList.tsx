@@ -7,6 +7,14 @@ type PostCommentsListProps = {
 };
 
 const PostCommentsList = ({ data }: PostCommentsListProps) => {
+  if (!data.length) {
+    return (
+      <div className="w-full py-4 flex justify-center items-center">
+        No comments. Be first to comment this post
+      </div>
+    );
+  }
+
   return (
     <div className="mb-0 py-4 flex flex-col gap-7">
       {data.map((c) => (

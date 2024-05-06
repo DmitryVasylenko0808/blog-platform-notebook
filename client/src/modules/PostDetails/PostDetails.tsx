@@ -60,7 +60,8 @@ const PostDetails = () => {
   }
 
   if (error) {
-    alert("Error");
+    alert("Oops... Something went wrong");
+    navigate(-1);
   }
 
   const isUserPost = data?.authorId === user?.id;
@@ -114,12 +115,14 @@ const PostDetails = () => {
 
         {isUserPost && (
           <div className="mb-8 flex gap-5">
-            <Link
+            <Button
+              variant="primary"
+              size="small"
+              as="link"
               to={`/${data?.id}/edit`}
-              className="px-[26px] py-[13px] bg-notebook-300 border border-notebook-300 rounded font-normal text-white"
             >
               Edit Post
-            </Link>
+            </Button>
             <Button variant="primary" size="small" onClick={handleDeletePost}>
               Delete Post
             </Button>

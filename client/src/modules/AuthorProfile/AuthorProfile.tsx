@@ -1,14 +1,16 @@
 import React from "react";
 import { useGetProfileQuery } from "../../api/profilesApi/profilesApi";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { useImage } from "../../hooks/useImage";
 import Container from "../../components/Container";
 import { Link } from "react-router-dom";
+import Button from "../../components/Button";
 
 const AuthorProfile = () => {
   const { profileId } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const { data, isLoading, error } = useGetProfileQuery(profileId as string);
 
@@ -20,6 +22,11 @@ const AuthorProfile = () => {
         <div>Loading...</div>
       </Container>
     );
+  }
+
+  if (error) {
+    alert("Oops... Something went wrong");
+    navigate(-1);
   }
 
   const isUserProfile =
@@ -39,12 +46,14 @@ const AuthorProfile = () => {
           <div className="flex-auto pt-[35px] pr-20">
             {isUserProfile && (
               <div className="mb-4 flex justify-end">
-                <Link
+                <Button
+                  variant="primary"
+                  size="big"
+                  as="link"
                   to="/edit-profile"
-                  className="px-[26px] py-[13px] bg-notebook-300 border border-notebook-300 rounded font-normal text-white"
                 >
                   Edit Profile
-                </Link>
+                </Button>
               </div>
             )}
             <h2 className="mb-6">

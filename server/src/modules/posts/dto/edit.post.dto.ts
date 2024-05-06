@@ -3,5 +3,4 @@ export class EditPostDto {
     description?: string;
     body?: string;
     categoryId?: number;
-    imageFile?: string;
 }

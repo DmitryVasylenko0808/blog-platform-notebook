@@ -214,7 +214,9 @@ export class PostsService {
                 authorId,
             },
             data: {
-                ...body,
+                title: body.title,
+                description: body.description,
+                body: body.body,
                 imageUrl: imageFilename,
                 categoryId: Number(body.categoryId)
             }

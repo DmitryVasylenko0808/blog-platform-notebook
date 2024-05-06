@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { MdReply } from "react-icons/md";
-import { FaTrash } from "react-icons/fa6";
-import { Comment } from "../../api/posts/dto/get-comments.dto";
+import { useImage } from "../../hooks/useImage";
 import { useAuth } from "../../hooks/useAuth";
 import {
   useDeleteCommentMutation,
   useLazyGetAnswersQuery,
 } from "../../api/posts/postsApi";
+import { Link, useParams } from "react-router-dom";
+import { MdReply } from "react-icons/md";
+import { FaTrash } from "react-icons/fa6";
+import { Comment } from "../../api/posts/dto/get-comments.dto";
 import PostCommentsList from "./PostCommentsList";
 import LoadAnswersButton from "./LoadAnswersButton";
 import ModalReplyCommentForm from "./ModalReplyCommentForm";
-import { AVATARS_URL, NULL_AVATAR_URL } from "../../constants/api";
 
 type CommentItemProps = {
   data: Comment;
@@ -24,10 +24,9 @@ const CommentItem = ({ data }: CommentItemProps) => {
   const [isOpenReplyModal, setIsOpenReplyModal] = useState<boolean>(false);
 
   const [triggerDeleteComment, { isLoading }] = useDeleteCommentMutation();
-  const [
-    triggerGetAnswers,
-    { data: answersData, isLoading: isLoadingAnswers },
-  ] = useLazyGetAnswersQuery();
+  const [triggerGetAnswers, { data: answersData }] = useLazyGetAnswersQuery();
+
+  const avatarImageSrc = useImage("avatar", data?.author.profile.avatarUrl);
 
   const handleOpenReplyModal = () => setIsOpenReplyModal(true);
   const handleCloseReplyModal = () => setIsOpenReplyModal(false);
@@ -55,10 +54,6 @@ const CommentItem = ({ data }: CommentItemProps) => {
   const isUserComment = data.authorId === user?.id;
   const isShowLoadAnswersButton =
     data._count.children && !answersData?.comments;
-
-  const avatarImageSrc = data?.author.profile.avatarUrl
-    ? AVATARS_URL + data.author.profile.avatarUrl
-    : NULL_AVATAR_URL;
 
   return (
     <div className="flex gap-4">

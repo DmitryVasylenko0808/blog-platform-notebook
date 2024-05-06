@@ -7,7 +7,7 @@ const FeaturedPosts = () => {
   const { data } = useGetPostsQuery({
     offset: 0,
     limit: 4,
-    type: "popular",
+    type: "featured",
   });
 
   return (

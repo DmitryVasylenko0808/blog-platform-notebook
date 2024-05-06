@@ -31,7 +31,9 @@ export class ProfilesService {
         await this.prismaService.profile.update({
             where: { id },
             data: { 
-                ...body,
+                firstName: body.firstName,
+                secondName: body.secondName,
+                description: body.description,
                 avatarUrl: avatarFilename
             }
         });
