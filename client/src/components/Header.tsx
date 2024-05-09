@@ -1,12 +1,11 @@
 import React from "react";
+import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router-dom";
-import Logo from "./Logo";
-import SearchBar from "./SearchBar";
-import ThemeSwitcher from "./ThemeSwitcher";
 import { MdOutlineLogin, MdOutlineLogout } from "react-icons/md";
 import { BsPencilSquare } from "react-icons/bs";
+import Logo from "./Logo";
+import SearchBar from "./SearchBar";
 import Container from "./Container";
-import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
   const { isAuthenticated, user, logOut } = useAuth();
@@ -20,7 +19,6 @@ const Header = () => {
           </Link>
           <div className="flex justify-center items-center gap-8">
             <SearchBar />
-            <ThemeSwitcher />
             {isAuthenticated ? (
               <div className="flex items-center gap-4">
                 <Link to="/create-post" className="mx-4">

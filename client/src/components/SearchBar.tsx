@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { MdOutlineSearch } from "react-icons/md";
 import { useNavigate } from "react-router";
 
 const SearchBar = () => {
   const [value, setValue] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
 
@@ -13,6 +14,7 @@ const SearchBar = () => {
 
   const handleSearchPosts = () => {
     if (!value) {
+      inputRef.current?.focus();
       return;
     }
 
@@ -25,6 +27,7 @@ const SearchBar = () => {
         className="py-0.5 px-1 bg-transparent border-b-2 border-notebook-100 outline-none focus:border-notebook-300"
         aria-label="search"
         onChange={(e) => handleChange(e.target.value)}
+        ref={inputRef}
       />
       <button className="" aria-label="search" onClick={handleSearchPosts}>
         <MdOutlineSearch size={24} />

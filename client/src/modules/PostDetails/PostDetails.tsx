@@ -140,7 +140,7 @@ const PostDetails = () => {
           <img
             className="w-full h-[500px] mb-8 rounded-md"
             src={postImageSrc}
-            alt="post image"
+            alt="post"
           />
         )}
 
