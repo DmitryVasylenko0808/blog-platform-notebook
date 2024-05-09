@@ -6,6 +6,7 @@ import PostsList from "../../components/PostsList";
 import Tags from "./Tags";
 import { useGetPostsQuery } from "../../api/posts/postsApi";
 import { useSearchParams } from "react-router-dom";
+import SkeletonPostsList from "../../components/SkeletonPostsList";
 
 const RecentlyPosts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,7 +15,7 @@ const RecentlyPosts = () => {
   const categoryIds = searchParams.get("categoryIds") ?? "";
   const limit = 8;
 
-  const { data } = useGetPostsQuery({
+  const { data, isLoading } = useGetPostsQuery({
     offset: limit * (page - 1),
     limit,
     type: "recently",
@@ -34,16 +35,19 @@ const RecentlyPosts = () => {
         <div className="flex">
           <div className="">
             <Title filledText="Recently" text="Posted" />
-            <Pagination
-              totalPages={data ? Math.ceil(data?.totalCount / limit) : 0}
-              countSiblings={1}
-              currentPage={page}
-              onPageClick={handleClickPage}
-            >
-              <div className="pr-[320px] pb-20">
-                <PostsList data={data?.posts || []} />
-              </div>
-            </Pagination>
+            {data && (
+              <Pagination
+                totalPages={Math.ceil(data?.totalCount / limit)}
+                countSiblings={1}
+                currentPage={page}
+                onPageClick={handleClickPage}
+              >
+                <div className="pr-[320px] pb-20">
+                  <PostsList data={data.posts} />
+                </div>
+              </Pagination>
+            )}
+            {isLoading && <SkeletonPostsList />}
           </div>
           <Tags />
         </div>

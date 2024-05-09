@@ -2,9 +2,10 @@ import React from "react";
 import Title from "../../components/Title";
 import { useGetPostsQuery } from "../../api/posts/postsApi";
 import PopularPostCard from "./PopularPostCard";
+import SkeletonPopularPosts from "./SkeletonPopularPosts";
 
 const PopularPosts = () => {
-  const { data } = useGetPostsQuery({
+  const { data, isLoading } = useGetPostsQuery({
     offset: 0,
     limit: 7,
     type: "popular",
@@ -18,6 +19,7 @@ const PopularPosts = () => {
           data.posts.map((post) => (
             <PopularPostCard data={post} key={post.id} />
           ))}
+        {isLoading && <SkeletonPopularPosts />}
       </div>
     </div>
   );

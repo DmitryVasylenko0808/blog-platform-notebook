@@ -5,6 +5,7 @@ import { useGetCommentsQuery } from "../../api/posts/postsApi";
 import { useParams } from "react-router";
 import Pagination from "../../components/Pagination";
 import AddCommentForm from "./AddCommentForm";
+import SkeleteonComments from "./SkeleteonComments";
 
 const PostComments = () => {
   const limit = 8;
@@ -13,7 +14,7 @@ const PostComments = () => {
 
   const [page, setPage] = useState<number>(0);
 
-  const { data, isLoading, error } = useGetCommentsQuery({
+  const { data, isLoading } = useGetCommentsQuery({
     postId: postId as string,
     offset: page * limit,
     limit,
@@ -23,16 +24,6 @@ const PostComments = () => {
     setPage(pageNumber - 1);
   };
 
-  if (isLoading) {
-    return (
-      <section className="pt-2 pb-10">
-        <Container>
-          <div className="mb-4 px-16">Loading...</div>
-        </Container>
-      </section>
-    );
-  }
-
   return (
     <section className="pt-2 pb-10">
       <Container>
@@ -41,14 +32,17 @@ const PostComments = () => {
             <h4 className="mb-0">{data?.totalCount} Comments</h4>
           </div>
           <AddCommentForm />
-          <Pagination
-            totalPages={data ? Math.ceil(data?.totalCount / limit) : 0}
-            currentPage={page + 1}
-            countSiblings={1}
-            onPageClick={handleClickPage}
-          >
-            <PostCommentsList data={data?.comments || []} />
-          </Pagination>
+          {data && (
+            <Pagination
+              totalPages={Math.ceil(data?.totalCount / limit)}
+              currentPage={page + 1}
+              countSiblings={1}
+              onPageClick={handleClickPage}
+            >
+              <PostCommentsList data={data.comments} />
+            </Pagination>
+          )}
+          {isLoading && <SkeleteonComments />}
         </div>
       </Container>
     </section>

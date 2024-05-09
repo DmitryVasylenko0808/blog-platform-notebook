@@ -11,7 +11,8 @@ module.exports = {
           200: "#E8F3F3",
           250: "#94D7D3",
           300: "#00AAA1"
-        }
+        },
+        skeleton: "#c4c4c4"
       },
       padding: {
         25: "100px"

@@ -4,6 +4,7 @@ import { useSearchPostsQuery } from "../../api/posts/postsApi";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import PostsList from "../../components/PostsList";
+import SkeletonPostsList from "../../components/SkeletonPostsList";
 
 const SearchPosts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,14 +42,17 @@ const SearchPosts = () => {
             Search Results For <span className="font-bold">{value}</span>
           </h5>
         </div>
-        <Pagination
-          totalPages={data ? Math.ceil(data?.totalCount / limit) : 0}
-          countSiblings={1}
-          currentPage={page}
-          onPageClick={handleClickPage}
-        >
-          <PostsList data={data?.posts || []} />
-        </Pagination>
+        {data && (
+          <Pagination
+            totalPages={Math.ceil(data.totalCount / limit)}
+            countSiblings={1}
+            currentPage={page}
+            onPageClick={handleClickPage}
+          >
+            <PostsList data={data.posts} />
+          </Pagination>
+        )}
+        {isLoading && <SkeletonPostsList />}
       </Container>
     </section>
   );

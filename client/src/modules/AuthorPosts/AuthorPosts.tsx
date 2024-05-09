@@ -5,6 +5,7 @@ import PostsList from "../../components/PostsList";
 import { useGetPostsQuery } from "../../api/posts/postsApi";
 import { useParams, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination";
+import SkeletonPostsList from "../../components/SkeletonPostsList";
 
 const AuthorPosts = () => {
   const { profileId } = useParams();
@@ -29,16 +30,19 @@ const AuthorPosts = () => {
     <section className="py-25">
       <Container>
         <Title filledText="Read" text="Author Blogs" />
-        <Pagination
-          totalPages={data ? Math.ceil(data.totalCount / limit) : 0}
-          countSiblings={1}
-          currentPage={page}
-          onPageClick={handleClickPage}
-        >
-          <div className="pb-20">
-            <PostsList data={data?.posts || []} />
-          </div>
-        </Pagination>
+        {data && (
+          <Pagination
+            totalPages={Math.ceil(data.totalCount / limit)}
+            countSiblings={1}
+            currentPage={page}
+            onPageClick={handleClickPage}
+          >
+            <div className="pb-20">
+              <PostsList data={data.posts} />
+            </div>
+          </Pagination>
+        )}
+        {isLoading && <SkeletonPostsList />}
       </Container>
     </section>
   );

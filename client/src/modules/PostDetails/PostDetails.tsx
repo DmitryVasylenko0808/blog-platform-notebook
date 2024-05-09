@@ -14,6 +14,7 @@ import Container from "../../components/Container";
 import Markdown from "react-markdown";
 import Button from "../../components/Button";
 import ToggleFavoritePost from "./ToggleFavoritePost";
+import SkeletonPostDetails from "./SkeletonPostDetails";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -56,7 +57,13 @@ const PostDetails = () => {
   const date = formatDate(data?.createdAt);
 
   if (isLoading) {
-    return <div className="">Loading</div>;
+    return (
+      <Container>
+        <section className="px-16 pt-20 pb-10">
+          <SkeletonPostDetails />
+        </section>
+      </Container>
+    );
   }
 
   if (error) {
