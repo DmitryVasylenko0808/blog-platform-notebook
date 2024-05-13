@@ -146,14 +146,14 @@ export const postsApi = createApi({
                 method: "POST",
                 body: { body }
             }),
-            invalidatesTags: ["Comment"]
+            invalidatesTags: ["Comment", "Post"]
         }),
         deleteComment: builder.mutation<void, DeleteCommentParams>({
             query: ({ postId, commentId }) => ({
                 url: `/${postId}/comments/${commentId}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ["Comment"]
+            invalidatesTags: ["Comment", "Post"]
         }),
         getAnswers: builder.query<GetCommentsDTO, GetAnswersParams>({
             query: ({ postId, commentId }) => `/${postId}/comments/${commentId}/answers`,
