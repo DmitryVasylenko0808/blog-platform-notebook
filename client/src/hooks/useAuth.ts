@@ -21,7 +21,6 @@ export const useAuth = () => {
         triggerGetUser()
             .unwrap()
             .then((res) => dispatch(setUserInfo({ id: res.id, login: res.login })))
-            .catch((err) => alert(err.data.message));
     }
 
     const logOut = () => {

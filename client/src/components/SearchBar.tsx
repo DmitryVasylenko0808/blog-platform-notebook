@@ -24,7 +24,7 @@ const SearchBar = () => {
   return (
     <div className="flex gap-1 items-center font-semibold text-[17px]">
       <input
-        className="py-0.5 px-1 bg-transparent border-b-2 border-notebook-100 outline-none focus:border-notebook-300"
+        className="py-0.5 px-1 bg-transparent border-b-2 border-inherit outline-none focus:border-notebook-300"
         aria-label="search"
         onChange={(e) => handleChange(e.target.value)}
         ref={inputRef}

@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
+import React, { lazy, useEffect } from "react";
 import { useAuth } from "./hooks/useAuth";
 import { Route, Routes } from "react-router";
-import HomePage from "./pages/HomePage";
 import BasicLayout from "./layouts/BasicLayout";
-import PostDetailsPage from "./pages/PostDetailsPage";
-import SignInPage from "./pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
-import ProfilePage from "./pages/ProfilePage";
-import EditProfilePage from "./pages/EditProfilePage";
 import RequireAuth from "./components/RequireAuth";
-import CreatePostPage from "./pages/CreatePostPage";
-import EditPostPage from "./pages/EditPostPage";
-import SearchPostsPage from "./pages/SearchPostsPage";
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const PostDetailsPage = lazy(() => import("./pages/PostDetailsPage"));
+const SearchPostsPage = lazy(() => import("./pages/SearchPostsPage"));
+const SignInPage = lazy(() => import("./pages/SignInPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const EditProfilePage = lazy(() => import("./pages/EditProfilePage"));
+const CreatePostPage = lazy(() => import("./pages/CreatePostPage"));
+const EditPostPage = lazy(() => import("./pages/EditPostPage"));
 
 function App() {
   const { isAuthenticated, token, authorize } = useAuth();

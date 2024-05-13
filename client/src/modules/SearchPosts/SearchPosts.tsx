@@ -1,13 +1,14 @@
 import React from "react";
 import Container from "../../components/Container";
 import { useSearchPostsQuery } from "../../api/posts/postsApi";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import PostsList from "../../components/PostsList";
 import SkeletonPostsList from "../../components/SkeletonPostsList";
 
 const SearchPosts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const value = searchParams.get("value") ?? "";
   const page = parseFloat(searchParams.get("page") ?? "1");
@@ -26,12 +27,9 @@ const SearchPosts = () => {
     });
   };
 
-  if (isLoading) {
-    return <div>Loadiing...</div>;
-  }
-
   if (error) {
-    <div>Error</div>;
+    alert("Oops... Something went wrong");
+    navigate(-1);
   }
 
   return (

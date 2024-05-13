@@ -25,7 +25,7 @@ const RelatedPosts = () => {
         {data && (
           <div className="flex gap-4">
             {data.map((post) => (
-              <RelatedPostCard data={post} />
+              <RelatedPostCard data={post} key={post.id} />
             ))}
           </div>
         )}
