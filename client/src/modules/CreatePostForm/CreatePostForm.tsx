@@ -109,6 +109,7 @@ const CreatePostForm = () => {
                       e.preventDefault();
                       handleSelectCategory(c.id);
                     }}
+                    key={c.id}
                   />
                 ))}
               </div>

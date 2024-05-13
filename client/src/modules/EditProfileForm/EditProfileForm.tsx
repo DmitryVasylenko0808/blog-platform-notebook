@@ -46,7 +46,7 @@ const EditProfileForm = () => {
         .unwrap()
         .catch((err) => alert(err.data.message));
     }
-  }, []);
+  }, [user]);
 
   const submitHandler = (data: EditProfileFormFields) => {
     const { avatarFile, ...other } = data;

@@ -1,21 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useGetCategoriesQuery } from "../../api/categories/categoriesApi";
 import {
-  useCreatePostMutation,
   useEditPostMutation,
   useGetPostDetailsQuery,
 } from "../../api/posts/postsApi";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router";
+import { POSTS_IMAGES_URL } from "../../constants/api";
 import Container from "../../components/Container";
 import TextField from "../../components/TextField";
 import TextArea from "../../components/TextArea";
 import SimpleMDE from "react-simplemde-editor";
 import Tag from "../../components/Tag";
 import Button from "../../components/Button";
-import "easymde/dist/easymde.min.css";
-import { useParams } from "react-router";
 import ImageFileSelect from "../../components/ImageFileSelect";
-import { POSTS_IMAGES_URL } from "../../constants/api";
+
+import "easymde/dist/easymde.min.css";
 
 type EditPostFormFields = {
   title: string;
@@ -49,7 +49,7 @@ const EditPostForn = () => {
       setBody(data.body);
       setCategoryId(data.categoryId);
     }
-  }, []);
+  }, [data]);
 
   const handleChangeBody = useCallback((body: string) => {
     setBody(body);
@@ -88,10 +88,6 @@ const EditPostForn = () => {
         .catch((err) => alert(err.data.message));
     }
   };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   const previewImageSrc = data?.imageUrl
     ? POSTS_IMAGES_URL + data?.imageUrl
@@ -141,6 +137,7 @@ const EditPostForn = () => {
                       e.preventDefault();
                       handleSelectCategory(c.id);
                     }}
+                    key={c.id}
                   />
                 ))}
               </div>
