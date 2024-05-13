@@ -3,6 +3,7 @@ import { GetPostsDTO } from "./dto/get-posts.dto";
 import { GetPostDelailsDTO } from "./dto/get-post-details.dto";
 import { GetRelatedPostsDTO } from "./dto/get-related-posts.dto";
 import { GetCommentsDTO } from "./dto/get-comments.dto";
+import { API_URL_POSTS } from "../../constants/api";
 
 type GetPostsParams = {
     offset: number;
@@ -71,7 +72,7 @@ type AddAnswerParams = {
 export const postsApi = createApi({
     reducerPath: "postsApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000/api/posts",
+        baseUrl: API_URL_POSTS,
         prepareHeaders: (headers) => {
             headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
         }

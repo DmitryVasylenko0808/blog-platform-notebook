@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { GetProfileDTO } from "./dto/get-profile.dto";
+import { API_URL_PROFILES } from "../../constants/api";
 
 type EditProfileParams = {
     firstName: string;
@@ -11,7 +12,7 @@ type EditProfileParams = {
 export const profilesApi = createApi({
     reducerPath: "profilesApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000/api/profiles",
+        baseUrl: API_URL_PROFILES,
         prepareHeaders: (headers) => {
             headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
         }

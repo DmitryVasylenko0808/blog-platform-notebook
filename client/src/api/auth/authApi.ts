@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { SignInDTO } from "./dto/sign-in.dto";
 import { GetMeDTO } from "./dto/get-me.dto";
+import { API_URL_AUTH } from "../../constants/api";
 
 type SignInParams = {
     login: string;
@@ -18,7 +19,7 @@ type SignUpParams = {
 export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000/api/auth",
+        baseUrl: API_URL_AUTH,
         prepareHeaders: (headers) => {
             headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
         }
