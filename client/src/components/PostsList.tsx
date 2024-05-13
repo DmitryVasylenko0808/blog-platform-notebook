@@ -2,11 +2,11 @@ import React from "react";
 import Post from "./Post";
 import { Post as PostEntity } from "../api/posts/dto/get-posts.dto";
 
-type PostsList = {
+type PostsListProps = {
   data: PostEntity[];
 };
 
-const PostsList = ({ data }: PostsList) => {
+const PostsList = ({ data }: PostsListProps) => {
   if (!data.length) {
     return (
       <div className="w-full py-4 flex justify-center items-center">

@@ -1,6 +1,5 @@
 import React from "react";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
-import Button from "./Button";
 
 type PaginationProps = {
   totalPages: number;

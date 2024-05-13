@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { MdOutlineClose } from "react-icons/md";
 
 type ModalProps = {

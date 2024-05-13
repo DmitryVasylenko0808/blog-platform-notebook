@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { postsApi } from '../api/posts/postsApi';
 import { categoriesApi } from '../api/categories/categoriesApi';
