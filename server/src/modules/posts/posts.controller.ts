@@ -88,27 +88,4 @@ export class PostsController {
     async toggleFavorite(@Request() req, @Param("id", ParseIntPipe) id: number): Promise<void> {
         return await this.favoritePostsService.toggleFavorite(id, req.user.id);
     }
-
-    // @Get("featured")
-    // async getFeatured(@Query() query: GetPostsQueryParams): Promise<GetPostsResponse> {
-    //     return await this.postsService.getFeatured(query);
-    // }
-
-    // @Get("popular")
-    // async getPopular(@Query() query: GetPostsQueryParams): Promise<GetPostsResponse> {
-    //     return await this.postsService.getPopular(query);
-    // }
-
-    // @Get("recently")
-    // async getRecently(@Query() query: GetPostsQueryParams): Promise<GetPostsResponse> {
-    //     return await this.postsService.getRecently(query);
-    // }
-
-    // @Get(":authorId/author-posts")
-    // async getByAuthor(
-    //     @Param("authorId", ParseIntPipe) authorId: number, 
-    //     @Query() query: GetPostsQueryParams
-    // ): Promise<GetPostsResponse> {
-    //     return await this.postsService.getByAuthor(authorId, query);
-    // }
 }
