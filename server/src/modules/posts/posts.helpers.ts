@@ -20,7 +20,7 @@ export const buildFilter = (filterParams: Omit<GetPostsQueryParams, "limit" | "o
         }
     } else if (type === "featured") {
         const currentDate = new Date();
-        const dateStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+        const dateStart = new Date(currentDate.getFullYear(), currentDate.getMonth());
         const dateEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
 
         filter = {
